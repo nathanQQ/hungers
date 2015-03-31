@@ -1,0 +1,25 @@
+<div class="center">
+  <h2>Seller list</h2><br>
+</div>
+
+<table class="table table-striped table-bordered">
+  <tr>
+    <th class="text-center">ID</th>
+    <th class="text-center">Name</th>
+    <th class="text-center">aka Name</th>
+    <th class="text-center">promote</th>
+  </tr>
+
+  <% @sellers.each do |seller| %>
+    <tr>
+      <td class="center"><%= seller.id %></td>
+      <td class="center"><%= seller.name %></td>
+      <td class="center"><%= seller.aka_name %></td>
+      <% if seller.is_promoted == false %>
+        <td class="center"><%= link_to 'add promote', management_promote_path(seller, :id => seller.id) %></td>
+      <% else %>
+        <td class="center"><%= link_to 'del promote', management_promote_path(seller, :id => seller.id) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

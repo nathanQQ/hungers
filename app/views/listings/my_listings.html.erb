@@ -1,0 +1,26 @@
+
+<div class="row">
+  <% @listings.each do |listing| %>
+    <div class="col-md-3">
+      <div class="thumbnail">
+        <div class="caption">            
+          <%= link_to image_tag(listing.image.url), listing %>
+          <h4><%= listing.name %></h4>       
+          <p><%= number_to_currency(listing.price) %></p>           
+          <p><%= "Liked by #{listing.get_likes.size}" %></p>
+          <p><%= "Num of orders: WQ TODO " %></p>
+          <p><%= "by #{listing.seller.name}(#{listing.seller.aka_name})" %></p>
+          <p><%= "sold on #{listing.sold_date}" %></p>
+        </div>  
+      </div>        
+    </div>
+  <% end %>  
+</div>
+
+<br>
+<%= paginate @listings %>
+
+<% if seller_signed_in? %>
+  <%= link_to 'New Listing', new_listing_path %>
+<% end %>
+
