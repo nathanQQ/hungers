@@ -46,7 +46,6 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        @order.num = rand(1..100)
         format.html { redirect_to root_url, notice: "Order was successfully created. Your order number is #{@order.id}. Use this number for pick up." }
         format.json { render :show, status: :created, location: @order }
       else
