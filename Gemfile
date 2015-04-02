@@ -1,3 +1,4 @@
+source 'https://code.stripe.com'
 source 'https://rubygems.org'
 ruby "2.1.5"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -31,6 +32,7 @@ gem 'kaminari'
 gem 'acts_as_votable', '~> 0.10.0'
 gem "paranoia", "~> 2.0"
 gem "paperclip-dropbox", ">= 1.1.7"
+gem 'stripe'
 
 group :production do
 	gem 'pg'
