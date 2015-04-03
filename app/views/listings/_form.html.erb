@@ -30,7 +30,7 @@
 
   <div>
     <%= f.label :sold_date %><br>
-    <%= f.date_field :sold_date, min: Date.tomorrow, max: 3.days.from_now %>
+    <%= f.date_field :sold_date, min: Date.today, max: 2.days.from_now %>
   </div>
 
   <br>
