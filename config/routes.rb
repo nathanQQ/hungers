@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     end
     get 'page/:page', :action => :index, :on => :collection  # it is for SEO friendly.
   end
-  
+
+  mount StripeEvent::Engine, at: '/stripe_event_webhook'
+
   #resources :sellers do
   #  member do
   #    put "promote", to: "management#promote"

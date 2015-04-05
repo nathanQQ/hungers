@@ -55,7 +55,9 @@ class OrdersController < ApplicationController
           :amount => (@listing.price * 100).floor,
           :currency => "usd",
           :card => token,
-          :receipt_email => current_user.email
+          :metadata => {
+            :email => current_user.email
+          }
           )
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
