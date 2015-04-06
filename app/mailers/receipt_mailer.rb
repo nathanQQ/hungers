@@ -6,7 +6,7 @@ class ReceiptMailer < ActionMailer::Base
     @amount = charge.amount.to_i/100
     mail(
       :to => charge.metadata.email,
-      :subject => "Your Receipt Number: #{charge.id}"
+      :subject => "Your Receipt Number from Hungers.me: #{charge.id}"
     )
   end
 end

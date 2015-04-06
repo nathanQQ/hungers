@@ -11,28 +11,37 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-md-8">
-      <div class="from-group">
-      <%= label_tag :card_number, "Credit Card Number" %>
-      <%= text_field_tag :card_number, nil, {:name => nil, :'data-stripe' => "number", class: "form-control"} %>
-      </div>
-    </div>  
-    <div class="col-md-4">
-      <div class="from-group">
-        <%= label_tag :card_code, "CVC" %>
-        <%= text_field_tag :card_code, nil, {:name => nil, :'data-stripe' => "CVC", class: "form-control"} %>    
-      </div>
-    </div>  
-  </div>
+  <% if current_user.stripe_customer_id.nil? %>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="from-group">
+        <%= label_tag :card_number, "Credit Card Number" %>
+        <%= text_field_tag :card_number, nil, {:name => nil, :'data-stripe' => "number", class: "form-control"} %>
+        </div>
+      </div>  
+      <div class="col-md-4">
+        <div class="from-group">
+          <%= label_tag :card_code, "CVC" %>
+          <%= text_field_tag :card_code, nil, {:name => nil, :'data-stripe' => "CVC", class: "form-control"} %>    
+        </div>
+      </div>  
+    </div>
+    <br>    
+    <div class="from-group">
+      <%= label_tag "expiration", "Expiration" %><br>
+      <%= select_month nil, { use_two_digit_number: true}, { :name => nil, :'data-stripe' => "exp-month", class: "from-control"} %>
+      <%= select_year nil, { start_year: Date.today.year, end_year: Date.today.year+15}, { :name => nil, :'data-stripe' => "exp-year", class: "from-control"} %>    
+    </div>
+  <% else %>
+    <% # WQ TODO: displaying the last 4 digits of the credit card %>
+    <div class="from-group">
+      <% customer = Stripe::Customer.retrieve(current_user.stripe_customer_id) %>
+      <%= label_tag :last_four_digits, "last 4 digits of your credit card: #{customer.sources.data}" %>
 
-  <br>
-  
-  <div class="from-group">
-    <%= label_tag "expiration", "Expiration" %><br>
-    <%= select_month nil, { use_two_digit_number: true}, { :name => nil, :'data-stripe' => "exp-month", class: "from-control"} %>
-    <%= select_year nil, { start_year: Date.today.year, end_year: Date.today.year+15}, { :name => nil, :'data-stripe' => "exp-year", class: "from-control"} %>    
-  </div>
+    </div>
+
+
+  <% end %>
 
   <br>
 

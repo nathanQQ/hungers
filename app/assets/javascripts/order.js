@@ -1,11 +1,15 @@
 jQuery(function($){
 
-	//Stripe.setPublishableKey('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 	Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
 	$('#new_order').submit(function(event){
 		var $form = $(this);
-			$('input[type=submit]').attr('disabled',true);
-			Stripe.card.createToken($form, stripeResponseHandler);
+			if ($('input').length > 3) {
+				$('input[type=submit]').attr('disabled',true);
+				Stripe.card.createToken($form, stripeResponseHandler);
+			}
+			else {
+				$form.get(0).submit();
+			}
 			return false;
 	});
 });
