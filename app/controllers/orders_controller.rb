@@ -50,7 +50,7 @@ class OrdersController < ApplicationController
       if @order.save
         begin          
           customer_id = current_user.stripe_customer_id
-          if customer_id.nil?
+          if customer_id.nil? or customer_id.empty?
             token = params[:stripeToken] 
             customer = Stripe::Customer.create(
               :card => token,

@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <% if current_user.stripe_customer_id.nil? %>
+  <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %>
     <div class="row">
       <div class="col-md-8">
         <div class="from-group">
