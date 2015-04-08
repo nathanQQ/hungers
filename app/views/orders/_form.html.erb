@@ -32,12 +32,17 @@
       <%= select_month nil, { use_two_digit_number: true}, { :name => nil, :'data-stripe' => "exp-month", class: "from-control"} %>
       <%= select_year nil, { start_year: Date.today.year, end_year: Date.today.year+15}, { :name => nil, :'data-stripe' => "exp-year", class: "from-control"} %>    
     </div>
+    <br> 
+    <div class="from-group">
+      <%= label_tag "remeber my credit card", "remember my credit card" %>
+      <%= check_box_tag 'rmcc', 'yes', true %><br>
+    </div>
   <% else %>
     <% # WQ TODO: displaying the last 4 digits of the credit card %>
     <div class="from-group">
       <% customer = Stripe::Customer.retrieve(current_user.stripe_customer_id) %>
-      <%= label_tag :last_four_digits, "last 4 digits of your credit card: #{customer.sources.data}" %>
-
+      <%= label_tag :last_four_digits, "Using your saved credit card ending with:" %>      
+      <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4} %>
     </div>
 
 

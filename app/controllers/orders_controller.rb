@@ -45,43 +45,55 @@ class OrdersController < ApplicationController
     @order.email = current_user.email
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
-
+    token = params[:stripeToken] 
     respond_to do |format|
       if @order.save
         begin          
-          customer_id = current_user.stripe_customer_id
-          if customer_id.nil? or customer_id.empty?
-            token = params[:stripeToken] 
-            customer = Stripe::Customer.create(
+          #there is credit card token created by js due to new customer
+          if token
+            does_remember_card = params[:rmcc]
+            if does_remember_card == 'true'
+              customer = Stripe::Customer.create(
+                :card => token,
+                :description => 'credit card description',
+                :email => current_user.email
+                )
+
+              current_user.update_attribute(:stripe_customer_id, customer.id)
+
+              charge = Stripe::Charge.create(
+              :amount => (@listing.price * 100).floor,
+              :currency => "usd",
+              :customer => customer.id,
+              :metadata => {
+                #WQ TODO
+                #:email => current_user.email 
+                :email => "wuwq85@gmail.com"}
+              ) 
+            else  #does_remember_card
+              charge = Stripe::Charge.create(
+              :amount => (@listing.price * 100).floor,
+              :currency => "usd",
               :card => token,
-              :description => 'credit card description',
-              :email => current_user.email
-              )
+              :metadata => {
+                #WQ TODO
+                #:email => current_user.email 
+                :email => "wuwq85@gmail.com"}
+              ) 
+            end   #does_remember_card      
 
-            current_user.update_attribute(:stripe_customer_id, customer.id)
-
+          else  #token 
+            customer_id = current_user.stripe_customer_id
             charge = Stripe::Charge.create(
             :amount => (@listing.price * 100).floor,
             :currency => "usd",
-            #:card => token,
-            :customer => customer.id,
-            :metadata => {
-              #WQ TODO
-              #:email => current_user.email 
-              :email => "wuwq85@gmail.com"}
-            )
-          else
-            charge = Stripe::Charge.create(
-            :amount => (@listing.price * 100).floor,
-            :currency => "usd",
-            #:card => token,
             :customer => customer_id,
             :metadata => {
               #WQ TODO
               #:email => current_user.email 
               :email => "wuwq85@gmail.com"}
             )            
-          end
+          end  #token
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
