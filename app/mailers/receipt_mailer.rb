@@ -4,7 +4,7 @@ class ReceiptMailer < ActionMailer::Base
   def send_receipt charge
     @charge = charge
     @amount = charge.amount.to_i/100
-    @id = charge.status.upcase
-    mail(:to => charge.metadata.email, :subject => 'Your')
+    @id = charge.id.upcase
+    mail(:to => charge.metadata.email, :subject => "Your order id is #{@id}")
   end
 end
