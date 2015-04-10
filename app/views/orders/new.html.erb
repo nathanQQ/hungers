@@ -2,4 +2,7 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Back', listing_path(@listing, @order) %>
+<%= link_to 'Back', listing_path(@listing, @order) %> 
+<% if current_user.stripe_customer_id != nil %>
+ | <%= link_to "Change My Credit Card", new_listing_order_path(@listing, :is_new_cc => true) %>
+<% end %>

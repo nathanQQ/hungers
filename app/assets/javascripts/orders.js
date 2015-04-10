@@ -11,8 +11,7 @@ jQuery(function($){
 				$form.get(0).submit();
 			}
 			return false;
-	});
-
+	});	
 });
 
 function stripeResponseHandler(status, response){
@@ -25,7 +24,6 @@ function stripeResponseHandler(status, response){
 	    // response contains id and card, which contains additional card details
 	    var token = response.id;
 	    var is_remember_cc = $('#rmcc').is(':checked');
-	    
 	    // Insert the token into the form so it gets submitted to the server
 	    $form.append($('<input type="hidden" name="stripeToken" />').val(token));
 	    $form.append($('<input type="hidden" name="rmcc" />').val(is_remember_cc));

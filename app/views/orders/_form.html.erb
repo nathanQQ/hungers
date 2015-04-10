@@ -42,10 +42,8 @@
     <div class="from-group">
       <% customer = Stripe::Customer.retrieve(current_user.stripe_customer_id) %>
       <%= label_tag :last_four_digits, "Using your saved credit card ending with:" %>      
-      <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4} %>
+      <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4} %>      
     </div>
-
-
   <% end %>
 
   <br>

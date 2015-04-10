@@ -8,7 +8,7 @@
   <%= csrf_meta_tags %>
   <%= tag :meta, :name => "stripe-key", :content => ENV["STRIPE_PUBLIC_KEY"] %>
 </head>
-<body>
+<body, data-no-turbolink >
 
 <%= render 'layouts/header' %>
 

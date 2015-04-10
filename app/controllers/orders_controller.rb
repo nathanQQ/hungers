@@ -27,6 +27,10 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
+    if params[:is_new_cc]
+      #current_user.update_attribute(:stripe_customer_id, nil)
+      current_user.stripe_customer_id = nil
+    end
   end
 
   # GET /orders/1/edit
