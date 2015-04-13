@@ -25,8 +25,7 @@
           <%= text_field_tag :card_code, nil, {:name => nil, :'data-stripe' => "CVC", class: "form-control"} %>    
         </div>
       </div>  
-    </div>
-    <br>    
+    </div>   
     <div class="from-group">
       <%= label_tag "expiration", "Expiration" %><br>
       <%= select_month nil, { use_two_digit_number: true}, { :name => nil, :'data-stripe' => "exp-month", class: "from-control"} %>
@@ -80,16 +79,22 @@
       </div>
       <br>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="from-group">
             <%= label_tag :last_four_digits, "last 4 digits" %>      
             <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4, class: "form-control"} %>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="from-group">
             <%= label_tag :brand, "brand" %>   
             <%= text_field_tag :brand, customer.sources.data[0].brand, {:disabled => true, class: "form-control"} %>      
+          </div>  
+        </div>          
+        <div class="col-md-4">
+          <div class="from-group">
+            <%= label_tag :expiration, "expiration" %>   
+            <%= text_field_tag :expiration, "#{customer.sources.data[0].exp_month}/#{customer.sources.data[0].exp_year}",  {:disabled => true, class: "form-control"} %>      
           </div>  
         </div>          
       </div>
