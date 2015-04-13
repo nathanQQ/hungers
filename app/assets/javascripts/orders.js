@@ -3,9 +3,12 @@ jQuery(function($){
 	Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
 	$('#new_order').submit(function(event){
 		var $form = $(this);
-			if ($('input').length > 4) {
+			if ($('input').length > 5) {
 				$('input[type=submit]').attr('disabled',true);
-				Stripe.card.createToken($form, stripeResponseHandler);
+				if (!form_validation())
+					return false;
+				else
+					Stripe.card.createToken($form, stripeResponseHandler);
 			}
 			else {
 				$form.get(0).submit();
@@ -13,6 +16,28 @@ jQuery(function($){
 			return false;
 	});	
 });
+
+function form_validation() {
+	var card_number = $('#card_number').val();
+	var cvc = $('#card_code').val();
+	var address = $('#billing_address1').val();
+	var city = $('#city').val();
+	var state = $('#state').val();
+	var zip = $('#zip_code').val();
+	if (card_number == "" ||
+		cvc == "" ||
+		address == "" ||
+		city == "" ||
+		state == "" ||
+		zip == "") {
+		alert("One or more required fields are empty. Please check and try again!");
+		$('input[type=submit]').attr('disabled',false);
+		return false;
+	}
+	else {
+		return true;
+	}
+}
 
 function stripeResponseHandler(status, response){
 	var $form = $('#new_order');

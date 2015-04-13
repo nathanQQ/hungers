@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %>
+  <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %> <%# customer who haven't saved credit card %>
     <div class="row">
       <div class="col-md-8">
         <div class="from-group">
@@ -33,17 +33,66 @@
       <%= select_year nil, { start_year: Date.today.year, end_year: Date.today.year+15}, { :name => nil, :'data-stripe' => "exp-year", class: "from-control"} %>    
     </div>
     <br> 
+
+    <div class="from-group">
+      <%= label_tag :billing_address, "Billing Address" %>  
+    </div>
+    <div class="from-group">
+      <%= label_tag :billing_address1, "line 1" %>
+      <%= text_field_tag :billing_address1, nil, {:name => nil, :'data-stripe' => "address_line1", class: "form-control"} %>    
+    </div>
+    <br>
+    <div class="from-group">
+      <%= label_tag :billing_address2, "line 2(optional)" %>
+      <%= text_field_tag :billing_address2, nil, {:name => nil, :'data-stripe' => "address_line2", class: "form-control"} %>    
+    </div>
+    <br>    
+    <div class="row">
+      <div class="col-md-4">
+        <div class="from-group">
+          <%= label_tag :city, "city" %>
+          <%= text_field_tag :city, nil, {:name => nil, :'data-stripe' => "address_city", class: "form-control"} %>    
+        </div>
+      </div>
+      <div class="col-md-4">  
+        <div class="from-group">
+          <%= label_tag :state, "state" %>
+          <%= select_tag :state, options_for_select(us_states), {:name => nil, :'data-stripe' => "address_state", class: "form-control"} %>
+        </div>
+      </div>
+      <div class="col-md-4">  
+        <div class="from-group">
+          <%= label_tag :zip_code, "zip code" %>
+          <%= text_field_tag :zip_code, nil, {:name => nil, :'data-stripe' => "address_zip", class: "form-control"} %>    
+        </div>
+      </div>
+    </div>
+    <br>
     <div class="from-group">
       <%= label_tag "remeber my credit card", "remember my credit card" %>
       <%= check_box_tag 'rmcc', 'yes', true %><br>
     </div>
-  <% else %>
-    <% # WQ TODO: displaying the last 4 digits of the credit card %>
-    <div class="from-group">
+  <% else %> <%# customer who saved Credit card %>
       <% customer = Stripe::Customer.retrieve(current_user.stripe_customer_id) %>
-      <%= label_tag :last_four_digits, "Using your saved credit card ending with:" %>      
-      <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4} %>      
-    </div>
+      <br>
+      <div class="from-group">
+        <%= label_tag :saved_card, "Using your saved credit card" %>      
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="from-group">
+            <%= label_tag :last_four_digits, "last 4 digits" %>      
+            <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4, class: "form-control"} %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="from-group">
+            <%= label_tag :brand, "credit card brand" %>   
+            <%= text_field_tag :brand, customer.sources.data[0].brand, {:disabled => true, class: "form-control"} %>      
+          </div>  
+        </div>          
+      </div>
   <% end %>
 
   <br>

@@ -102,7 +102,7 @@ class OrdersController < ApplicationController
           rescue Stripe::CardError => e
           flash[:danger] = e.message
         end        
-        format.html { redirect_to root_url, notice: "Order was successfully created. We will send receipt to your email. Use it for pick up." }
+        format.html { redirect_to root_url, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
