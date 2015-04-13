@@ -27,8 +27,10 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
+    if @listing.sold_date < Date.today
+      redirect_to root_url, notice: "This listing has been expired!"
+    end
     if params[:is_new_cc]
-      #current_user.update_attribute(:stripe_customer_id, nil)
       current_user.stripe_customer_id = nil
     end
   end
