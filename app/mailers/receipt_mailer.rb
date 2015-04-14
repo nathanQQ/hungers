@@ -4,7 +4,8 @@ class ReceiptMailer < ActionMailer::Base
   def send_receipt charge
     @charge = charge
     @amount = charge.amount.to_i/100
-    @id = charge.id.upcase
-    mail(:to => charge.metadata.email, :subject => "Your order id is #{@id}")
+    #@id = charge.id.upcase
+    @id = (0...8).map { (65 + rand(26)).chr }.join
+    mail(:to => charge.metadata.email, :subject => "Your Hungers.me order")
   end
 end
