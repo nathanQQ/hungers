@@ -3,7 +3,7 @@ jQuery(function($){
 	Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
 	$('#new_order').submit(function(event){
 		var $form = $(this);
-			if ($('input').length > 5) {
+			if ($('input').length > 6) {
 				$('input[type=submit]').attr('disabled',true);
 				if (!form_validation())
 					return false;

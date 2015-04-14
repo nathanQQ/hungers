@@ -16,7 +16,7 @@
       <div class="col-md-8">
         <div class="from-group">
         <%= label_tag :card_number, "Credit Card Number" %>
-        <%= text_field_tag :card_number, nil, {:name => nil, :'data-stripe' => "number", class: "form-control"} %>
+        <%= text_field_tag :card_number, nil, {:name => nil, :'data-stripe' => "number", :autofocus => :ture, class: "form-control"} %>
         </div>
       </div>  
       <div class="col-md-4">
