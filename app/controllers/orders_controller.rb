@@ -55,6 +55,8 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.save
         begin          
+          order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
+          
           #there is credit card token created by js due to new customer
           if token
             does_remember_card = params[:rmcc]
@@ -66,7 +68,6 @@ class OrdersController < ApplicationController
                 )
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
-              order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
               charge = Stripe::Charge.create(
               :amount => (@listing.price * 100).floor,
               :currency => "usd",
