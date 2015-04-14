@@ -66,7 +66,7 @@ class OrdersController < ApplicationController
                 )
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
-
+              order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
               charge = Stripe::Charge.create(
               :amount => (@listing.price * 100).floor,
               :currency => "usd",
@@ -74,7 +74,8 @@ class OrdersController < ApplicationController
               :metadata => {
                 #WQ TODO
                 #:email => current_user.email 
-                :email => "wuwq85@gmail.com"}
+                :email => "wuwq85@gmail.com",
+                :order_id => order_id}
               ) 
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -84,7 +85,8 @@ class OrdersController < ApplicationController
               :metadata => {
                 #WQ TODO
                 #:email => current_user.email 
-                :email => "wuwq85@gmail.com"}
+                :email => "wuwq85@gmail.com",
+                :order_id => order_id}
               ) 
             end   #does_remember_card      
 
@@ -97,13 +99,15 @@ class OrdersController < ApplicationController
             :metadata => {
               #WQ TODO
               #:email => current_user.email 
-              :email => "wuwq85@gmail.com"}
+              :email => "wuwq85@gmail.com",
+              :order_id => order_id}
             )            
           end  #token
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
         end        
+        @order.update_attribute(:order_id, charge.metadata.order_id)
         format.html { redirect_to root_url, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
         format.json { render :show, status: :created, location: @order }
       else
