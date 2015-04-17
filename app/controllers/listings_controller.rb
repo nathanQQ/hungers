@@ -104,9 +104,23 @@ class ListingsController < ApplicationController
   def create
     @listing = Listing.new(listing_params)
     @listing.seller_id = current_seller.id
+    
+    if current_seller.recipient.blank?
+      Stripe.api_key = ENV["STRIPE_API_KEY"]
+      token = params[:stripeToken] 
+      
+      recipient = Stripe::Recipient.create(
+      :name => current_seller.name,
+      :type => "individual", #WQ TODO
+      :bank_account => token
+      )  
+      
+      current_seller.recipient = recipient.id
+      current_seller.save
+    end
 
     respond_to do |format|
-      if @listing.save
+      if @listing.save   
         format.html { redirect_to @listing, notice: 'Listing was successfully created.' }
         format.json { render :show, status: :created, location: @listing }
       else
@@ -148,7 +162,7 @@ class ListingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def listing_params
-      params.require(:listing).permit(:name, :description, :price, :image, :sold_date)
+      params.require(:listing).permit(:name, :description, :price, :image, :sold_date, :country, :routing_number, :account_number)
     end
 
     def check_seller

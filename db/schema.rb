@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414072758) do
+ActiveRecord::Schema.define(version: 20150417051443) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20150414072758) do
     t.string   "aka_name"
     t.boolean  "is_promoted",            default: false
     t.integer  "cached_votes_up"
+    t.string   "recipient"
   end
 
   add_index "sellers", ["email"], name: "index_sellers_on_email", unique: true

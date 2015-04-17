@@ -8,7 +8,7 @@ jQuery(function($){
 				if (!form_validation())
 					return false;
 				else
-					Stripe.card.createToken($form, stripeResponseHandler);
+					Stripe.card.createToken($form, orderStripeResponseHandler);
 			}
 			else {
 				$form.get(0).submit();
@@ -39,7 +39,7 @@ function form_validation() {
 	}
 }
 
-function stripeResponseHandler(status, response){
+function orderStripeResponseHandler(status, response){
 	var $form = $('#new_order');
 	if(response.error){
 		//$form.find('.payment-errors').text(response.error.message);
