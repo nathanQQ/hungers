@@ -16,6 +16,11 @@
 		<% end %>
 		<p><%= number_to_currency(@listing.price) %></p>
 		<p><%= @listing.description %></p>
+		<% if @listing.seller.address_line2.blank? %>
+			<p><%= "Address: #{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<% else %>
+			<p><%= "Address: #{@listing.seller.address_line1}, #{@listing.seller.address_line2}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<% end %>
 		<p><%= link_to "Liked ", like_listing_path(@listing), method: :put %><%= "by #{@listing.get_likes.size}" %></p> 
 		<br>
 		<br>
