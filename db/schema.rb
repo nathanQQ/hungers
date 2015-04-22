@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421025327) do
+ActiveRecord::Schema.define(version: 20150422081640) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150421025327) do
     t.integer  "cached_votes_up"
     t.date     "sold_date"
     t.datetime "deleted_at"
+    t.integer  "nr_order",           default: 0
   end
 
   add_index "listings", ["deleted_at"], name: "index_listings_on_deleted_at"

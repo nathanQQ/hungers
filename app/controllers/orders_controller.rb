@@ -109,6 +109,8 @@ class OrdersController < ApplicationController
           flash[:danger] = e.message
         end        
         @order.update_attribute(:order_id, order_id)
+        @listing.nr_order += 1
+        @listing.save
         format.html { redirect_to root_url, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
         format.json { render :show, status: :created, location: @order }
       else

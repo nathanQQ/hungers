@@ -8,7 +8,7 @@
           <h4><%= listing.name %></h4>       
           <p><%= number_to_currency(listing.price) %></p>           
           <p><%= "Liked by #{listing.get_likes.size}" %></p>
-          <p><%= "Num of orders: WQ TODO " %></p>
+          <p><%= "Num of orders: #{listing.nr_order} " %></p>
           <p><%= "by #{listing.seller.name}(#{listing.seller.aka_name})" %></p>
           <p><%= "sold on #{listing.sold_date}" %></p>
         </div>  
