@@ -77,7 +77,7 @@ class OrdersController < ApplicationController
                 #:email => current_user.email 
                 :email => "wuwq85@gmail.com",
                 :order_id => order_id}
-              ) 
+              )
             else  #does_remember_card
               charge = Stripe::Charge.create(
               :amount => (@listing.price * 100).floor,
@@ -104,6 +104,14 @@ class OrdersController < ApplicationController
               :order_id => order_id}
             )            
           end  #token
+          
+          # create transfer. WQ TODO.
+          transfer = Stripe::Transfer.create(
+            :amount => (@listing.price * 100 * 0.971 - 40).floor,
+            :currency => "usd",
+            :recipient => @listing.seller.recipient
+            ) 
+
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
