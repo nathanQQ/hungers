@@ -25,7 +25,7 @@ class ListingsController < ApplicationController
   def like
     @listing = Listing.find(params[:id])
     if current_user.liked? @listing
-      redirect_to listing_path, notice: "alreay liked by you!"
+      redirect_to listing_path, notice: "already liked by you!"
     else
       @listing.liked_by current_user
       redirect_to listing_path, notice: "Thanks for liking me!"

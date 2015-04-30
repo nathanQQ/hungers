@@ -56,6 +56,13 @@ class OrdersController < ApplicationController
       if @order.save
         begin          
           order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
+          if @listing.seller.address_line2.blank?
+            seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
+          else
+            seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.address_line2 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
+          end
+          seller_email = @listing.seller.email
+
           
           #there is credit card token created by js due to new customer
           if token
@@ -76,7 +83,9 @@ class OrdersController < ApplicationController
                 #WQ TODO
                 #:email => current_user.email 
                 :email => "wuwq85@gmail.com",
-                :order_id => order_id}
+                :order_id => order_id,
+                :seller_address => seller_address,
+                :seller_email => seller_email}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -87,7 +96,9 @@ class OrdersController < ApplicationController
                 #WQ TODO
                 #:email => current_user.email 
                 :email => "wuwq85@gmail.com",
-                :order_id => order_id}
+                :order_id => order_id,
+                :seller_address => seller_address,
+                :seller_email => seller_email}
               ) 
             end   #does_remember_card      
 
@@ -101,7 +112,9 @@ class OrdersController < ApplicationController
               #WQ TODO
               #:email => current_user.email 
               :email => "wuwq85@gmail.com",
-              :order_id => order_id}
+              :order_id => order_id,
+              :seller_address => seller_address,
+              :seller_email => seller_email}
             )            
           end  #token
           
