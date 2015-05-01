@@ -85,7 +85,8 @@ class OrdersController < ApplicationController
                 :email => "wuwq85@gmail.com",
                 :order_id => order_id,
                 :seller_address => seller_address,
-                :seller_email => seller_email}
+                #:seller_email => seller_email
+                :seller_email => "wuwenqiancn@gmail.com"}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -98,7 +99,8 @@ class OrdersController < ApplicationController
                 :email => "wuwq85@gmail.com",
                 :order_id => order_id,
                 :seller_address => seller_address,
-                :seller_email => seller_email}
+                #:seller_email => seller_email
+                :seller_email => "wuwenqiancn@gmail.com"}
               ) 
             end   #does_remember_card      
 
@@ -114,7 +116,8 @@ class OrdersController < ApplicationController
               :email => "wuwq85@gmail.com",
               :order_id => order_id,
               :seller_address => seller_address,
-              :seller_email => seller_email}
+              #:seller_email => seller_email
+              :seller_email => "wuwenqiancn@gmail.com"}
             )            
           end  #token
           
