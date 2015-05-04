@@ -34,91 +34,88 @@
       </table>
     </div>
   </div>
-
-  <br>
   
   <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %> <%# customer who haven't saved credit card %>
     <div class="row">
       <div class="col-md-8">
-        <div class="from-group">
+        <div class="form-group">
         <%= label_tag :card_number, "Credit Card Number" %>
         <%= text_field_tag :card_number, nil, {:name => nil, :'data-stripe' => "number", :autofocus => :ture, class: "form-control"} %>
         </div>
       </div>  
       <div class="col-md-4">
-        <div class="from-group">
+        <div class="form-group">
           <%= label_tag :card_code, "CVC" %>
           <%= text_field_tag :card_code, nil, {:name => nil, :'data-stripe' => "CVC", class: "form-control"} %>    
         </div>
       </div>  
     </div>   
-    <div class="from-group">
+    <div class="form-group">
       <%= label_tag "expiration", "Expiration" %><br>
       <%= select_month nil, { use_two_digit_number: true}, { :name => nil, :'data-stripe' => "exp-month", class: "from-control"} %>
       <%= select_year nil, { start_year: Date.today.year, end_year: Date.today.year+15}, { :name => nil, :'data-stripe' => "exp-year", class: "from-control"} %>    
     </div>
     <br> 
 
-    <div class="from-group">
+    <div class="form-group">
       <%= label_tag :billing_address, "Billing Address" %>  
     </div>
-    <div class="from-group">
+    <div class="form-group">
       <%= label_tag :billing_address1, "line 1" %>
       <%= text_field_tag :billing_address1, nil, {:name => nil, :'data-stripe' => "address_line1", class: "form-control"} %>    
     </div>
     <br>
-    <div class="from-group">
+    <div class="form-group">
       <%= label_tag :billing_address2, "line 2(optional)" %>
       <%= text_field_tag :billing_address2, nil, {:name => nil, :'data-stripe' => "address_line2", class: "form-control"} %>    
     </div>
     <br>    
     <div class="row">
       <div class="col-md-4">
-        <div class="from-group">
+        <div class="form-group">
           <%= label_tag :city, "city" %>
           <%= text_field_tag :city, nil, {:name => nil, :'data-stripe' => "address_city", class: "form-control"} %>    
         </div>
       </div>
       <div class="col-md-4">  
-        <div class="from-group">
+        <div class="form-group">
           <%= label_tag :state, "state" %>
           <%= select_tag :state, options_for_select(us_states), {:name => nil, :'data-stripe' => "address_state", class: "form-control"} %>
         </div>
       </div>
       <div class="col-md-4">  
-        <div class="from-group">
+        <div class="form-group">
           <%= label_tag :zip_code, "zip code" %>
           <%= text_field_tag :zip_code, nil, {:name => nil, :'data-stripe' => "address_zip", class: "form-control"} %>    
         </div>
       </div>
     </div>
     <br>
-    <div class="from-group">
+    <div class="form-group">
       <%= label_tag "remeber my credit card", "remember my credit card" %>
       <%= check_box_tag 'rmcc', 'yes', true %><br>
     </div>
   <% else %> <%# customer who saved Credit card %>
       <% customer = Stripe::Customer.retrieve(current_user.stripe_customer_id) %>
       <br>
-      <div class="from-group">
+      <div class="form-group">
         <%= label_tag :saved_card, "Using your saved credit card" %>      
       </div>
-      <br>
       <div class="row">
-        <div class="col-md-4">
-          <div class="from-group">
+        <div class="col-md-2">
+          <div class="form-group">
             <%= label_tag :last_four_digits, "last 4 digits" %>      
             <%= text_field_tag :last_four_digits, customer.sources.data[0].last4, {:disabled => true, :size => 4, class: "form-control"} %>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="from-group">
+        <div class="col-md-2">
+          <div class="form-group">
             <%= label_tag :brand, "brand" %>   
             <%= text_field_tag :brand, customer.sources.data[0].brand, {:disabled => true, class: "form-control"} %>      
           </div>  
         </div>          
-        <div class="col-md-4">
-          <div class="from-group">
+        <div class="col-md-2">
+          <div class="form-group">
             <%= label_tag :expiration, "expiration" %>   
             <%= text_field_tag :expiration, "#{customer.sources.data[0].exp_month}/#{customer.sources.data[0].exp_year}",  {:disabled => true, class: "form-control"} %>      
           </div>  
@@ -127,6 +124,11 @@
   <% end %>
 
   <br>
+  
+  <div class="form-group">
+    <%= f.label :pickup_time, "Select your pickup time" %>
+    <%= f.select :pickup_time, pickup_time {|p| (p + @listing.sold_date).to_date} %> <i>(please place your order online at least 30 minutes before picking up)</i>
+  </div>
 
   <div class="form-group">
     <%= f.submit class: "btn btn-primary" %>
