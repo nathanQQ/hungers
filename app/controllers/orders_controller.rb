@@ -30,6 +30,9 @@ class OrdersController < ApplicationController
     if @listing.sold_date < Date.today
       redirect_to root_url, notice: "This listing has been expired!"
     end
+    if @listing.seller.tax_rate.blank?
+      redirect_to root_url, notice: "Sorry, the seller hasn't updated sales tax info."      
+    end
     if params[:is_new_cc]
       current_user.stripe_customer_id = nil
     end
@@ -49,6 +52,9 @@ class OrdersController < ApplicationController
     @order.seller_id = @listing.seller.id
     @order.listing_id = @listing.id
     @order.email = current_user.email
+
+    @tax = @listing.price * @listing.seller.tax_rate * 0.01
+    @total_price = @listing.price + @tax
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
@@ -76,7 +82,7 @@ class OrdersController < ApplicationController
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
               charge = Stripe::Charge.create(
-              :amount => (@listing.price * 100).floor,
+              :amount => (@total_price * 100).floor,
               :currency => "usd",
               :customer => customer.id,
               :metadata => {
@@ -90,7 +96,7 @@ class OrdersController < ApplicationController
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
-              :amount => (@listing.price * 100).floor,
+              :amount => (@total_price * 100).floor,
               :currency => "usd",
               :card => token,
               :metadata => {
@@ -107,7 +113,7 @@ class OrdersController < ApplicationController
           else  #token 
             customer_id = current_user.stripe_customer_id
             charge = Stripe::Charge.create(
-            :amount => (@listing.price * 100).floor,
+            :amount => (@total_price * 100).floor,
             :currency => "usd",
             :customer => customer_id,
             :metadata => {

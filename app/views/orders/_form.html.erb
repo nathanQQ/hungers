@@ -10,7 +10,33 @@
       </ul>
     </div>
   <% end %>
+  <br><br>
+  
+  <% @tax = @listing.price * @listing.seller.tax_rate * 0.01 %>
+  <% @total_price = @listing.price + @tax %>
 
+  <div class="row">
+    <div class="col-md-4">
+      <%= label_tag :order_summary, "Your new order #{@listing.name} from #{@listing.seller.name}" %>
+      <table class="table table-condensed"> 
+        <tr>
+          <td class="center">Item</td>
+          <td class="center"><%= number_to_currency(@listing.price) %></td>
+        </tr>
+        <tr>
+          <td class="center">Sale Tax Rate</td>
+          <td class="center"><%= "#{@listing.seller.tax_rate}%" %></td>
+        </tr>
+        <tr>
+          <td class="center">Total</td>
+          <td class="center"><%= number_to_currency(@total_price) %></td>
+        </tr>    
+      </table>
+    </div>
+  </div>
+
+  <br>
+  
   <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %> <%# customer who haven't saved credit card %>
     <div class="row">
       <div class="col-md-8">
