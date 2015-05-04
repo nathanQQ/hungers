@@ -50,10 +50,10 @@
                 <li class="divider"></li>
                 <li><%= link_to "My purchase", purchases_path %></li>
                 <li class="divider"></li>
-                <li><%= link_to "Edit profile",edit_user_registration_path%></li>         
+                <li><%= link_to "Edit profile",edit_user_registration_path%></li>
+                <li><%= link_to "Sign out of #{current_user.email}",destroy_user_session_path, method: :delete%></li>         
               </ul>              
-          </li>
-          <li><%= link_to "Sign out of #{current_user.email}",destroy_user_session_path, method: :delete%></li>
+          </li>          
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

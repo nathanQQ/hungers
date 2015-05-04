@@ -15,9 +15,9 @@
   <% @tax = @listing.price * @listing.seller.tax_rate * 0.01 %>
   <% @total_price = @listing.price + @tax %>
 
+  <%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %><br><br>
   <div class="row">
     <div class="col-md-4">
-      <%= label_tag :order_summary, "Your new order #{@listing.name} from #{@listing.seller.name}" %>
       <table class="table table-condensed"> 
         <tr>
           <td class="center">Item</td>
