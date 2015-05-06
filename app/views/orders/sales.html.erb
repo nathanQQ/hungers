@@ -1,5 +1,5 @@
 <div class="center">
-  <h2>Your sales history</h2><br>
+  <h2>Your sales history Today</h2><br>
 </div>
 
 <table class="table table-striped table-bordered">
@@ -8,7 +8,8 @@
     <th class="text-center">Item</th>
     <th class="text-center">Price</th>
     <th class="text-center">Buyer</th>
-    <th class="text-center">Order ID</th>    
+    <th class="text-center">Order number</th>    
+    <th class="text-center">Pick up at</th>
     <th class="text-center">Purchased at</th>
   </tr>
   
@@ -19,6 +20,7 @@
       <td class="center"><%= number_to_currency(order.listing.price) %></td>
       <td class="center"><%= order.user.email %></td>
       <td class="center"><%= order.order_id %></td>      
+      <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M") %></td>
       <td class="center"><%= order.created_at.getlocal.strftime("%H:%M, %B %-d, %Y") %></td>
     </tr>
   <% end %>

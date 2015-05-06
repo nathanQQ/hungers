@@ -9,7 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def sales
-    @orders = Order.all.where(seller: current_seller).order("created_at DESC").page(params[:page])
+    @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
+    #@orders = Order.all.where(:seller => current_seller).order("pickup_time DESC").page(params[:page])
   end
 
   # GET /orders

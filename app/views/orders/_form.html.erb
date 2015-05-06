@@ -127,7 +127,30 @@
   
   <div class="form-group">
     <%= f.label :pickup_time, "Select your pickup time" %>
-    <%= f.select :pickup_time, pickup_time {|p| (p + @listing.sold_date).to_date} %> <i>(please place your order online at least 30 minutes before picking up)</i>
+
+    <%= f.select :pickup_time, options_for_select([
+      ["11:00AM", "#{@listing.sold_date} 11:00AM".to_time],
+      ["11:30AM", "#{@listing.sold_date} 11:30AM".to_time],
+      ["12:00PM", "#{@listing.sold_date} 12:00PM".to_time],
+      ["12:30PM", "#{@listing.sold_date} 12:30PM".to_time], 
+      ["13:00PM", "#{@listing.sold_date} 13:00PM".to_time],
+      ["13:30PM", "#{@listing.sold_date} 13:30PM".to_time],
+      ["14:00PM", "#{@listing.sold_date} 14:00PM".to_time],
+      ["14:30PM", "#{@listing.sold_date} 14:30PM".to_time],
+      ["15:00PM", "#{@listing.sold_date} 15:00PM".to_time],
+      ["17:00PM", "#{@listing.sold_date} 17:00PM".to_time],
+      ["17:30PM", "#{@listing.sold_date} 17:30PM".to_time],
+      ["18:00PM", "#{@listing.sold_date} 18:00PM".to_time],
+      ["18:30PM", "#{@listing.sold_date} 18:30PM".to_time],
+      ["19:00PM", "#{@listing.sold_date} 19:00PM".to_time],
+      ["19:30PM", "#{@listing.sold_date} 19:30PM".to_time],
+      ["20:00PM", "#{@listing.sold_date} 20:00PM".to_time],
+      ["20:30PM", "#{@listing.sold_date} 20:30PM".to_time]
+      ]) 
+    %>
+
+
+    <i>(please place your order online at least 30 minutes before picking up)</i>
   </div>
 
   <div class="form-group">
