@@ -2,7 +2,7 @@ class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   # add filter to only allow user to create order
-  before_action :check_user, except: [:sales]
+  before_action :check_user, except: [:sales, :confirm_pickup]
 
   def purchases
     @orders = Order.all.where(user: current_user).order("created_at DESC")
@@ -11,6 +11,13 @@ class OrdersController < ApplicationController
   def sales
     @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
     #@orders = Order.all.where(:seller => current_seller).order("pickup_time DESC").page(params[:page])
+  end
+
+  def confirm_pickup
+    @order = Order.find(params[:id])
+    @order.is_pickedup ^= true
+    @order.save
+    redirect_to sales_path
   end
 
   # GET /orders
@@ -192,7 +199,7 @@ class OrdersController < ApplicationController
       elsif admin_signed_in?
         redirect_to root_url, notice: "Admin, please sign out first! Placing an order with your buyer account!"
       elsif !user_signed_in?
-        redirect_to root_url, notice: "Please sign in first before making an order!"
+        redirect_to user_session_url, notice: "please sign in to continue"
       end
     end    
 end

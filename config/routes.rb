@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   #seller
   get 'sales' => "orders#sales"
   get 'my_listings' => "listings#my_listings"
+  get 'confirm_pickup' => 'orders#confirm_pickup'
 
   #admin
   get 'management/show_sellers' => 'management#show_sellers'
