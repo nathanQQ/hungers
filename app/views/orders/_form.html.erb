@@ -11,17 +11,44 @@
     </div>
   <% end %>
   <br><br>
-  
-  <% @tax = @listing.price * @listing.seller.tax_rate * 0.01 %>
-  <% @total_price = @listing.price + @tax %>
 
-  <%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %><br><br>
+  <h4><%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %></h4><br><br>
+  
+  <div class="form_group">
+    <%= label_tag :nr_order, "how many orders do you want?" %>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <%= f.select :nr_order, options_for_select([['x1',1],
+                                                    ['x2',2],
+                                                    ['x3',3],
+                                                    ['x4',4],
+                                                    ['x5',5],
+                                                    ['x6',6],
+                                                    ['x7',7],
+                                                    ['x8',8],
+                                                    ['x9',9],
+                                                    ['x10',10]],
+      @nr_order) %>
+    </div>
+    <div class = 'col-md-2'>
+      <div class="form-group">
+        <%= link_to "update quantity", new_listing_order_path(@listing), :id => :quantity_update, data: {no_turbolink: true} %>
+      </div>   
+    </div>
+  </div>
+
+  <br>
+  
+  <% @tax = @listing.price * @nr_order * @listing.seller.tax_rate * 0.01 %>
+  <% @total_price = @listing.price * @nr_order + @tax %>
+
   <div class="row">
     <div class="col-md-4">
       <table class="table table-condensed"> 
         <tr>
           <td class="center">Item</td>
-          <td class="center"><%= number_to_currency(@listing.price) %></td>
+          <td class="center"><%= "#{number_to_currency(@listing.price)} * #{@nr_order}" %></td>
         </tr>
         <tr>
           <td class="center">Sale Tax Rate</td>
@@ -34,7 +61,7 @@
       </table>
     </div>
   </div>
-  
+
   <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %> <%# customer who haven't saved credit card %>
     <div class="row">
       <div class="col-md-8">

@@ -8,7 +8,7 @@ jQuery(function($){
 			Stripe.bankAccount.createToken($form, listingStripeResponseHandler);
 			return false;
 		}
-	});	
+	});
 });
 
 function listingStripeResponseHandler(status, response) {

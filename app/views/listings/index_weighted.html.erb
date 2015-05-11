@@ -4,7 +4,7 @@
     <div class="col-md-3">
       <div class="thumbnail">
         <div class="caption">            
-          <%= link_to image_tag(listing.image.url), listing %>
+          <%= link_to image_tag(listing.image.url), listing, data: {no_turbolink: true} %>
           <h4><%= listing.name %></h4>       
           <p><%= number_to_currency(listing.price) %></p> 
           <p><%= "Liked by #{listing.get_likes.size}" %></p>

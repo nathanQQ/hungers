@@ -26,9 +26,9 @@
 		<br>
 		<p3><%= link_to "Liked ", like_listing_path(@listing), method: :put %><%= "by #{@listing.get_likes.size}" %></p3> 
 		<br><br><br>
-
+		
 		<div class="center">
-			<%= link_to 'Order it now', new_listing_order_path(@listing), class: "btn btn-primary", data: {no_turbolink: true} %>
+			<%= link_to 'Order it now', new_listing_order_path(@listing), :id => :order_it_now, class: "btn btn-primary", data: {no_turbolink: true} %>
 		</div>
 	</div>	
 </div>

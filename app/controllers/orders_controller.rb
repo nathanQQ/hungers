@@ -44,6 +44,12 @@ class OrdersController < ApplicationController
     if params[:is_new_cc]
       current_user.stripe_customer_id = nil
     end
+
+    if !(@nr_order = params[:quantity])
+      @nr_order = 1
+    else
+      @nr_order = @nr_order.to_i
+    end
   end
 
   # GET /orders/1/edit
@@ -61,8 +67,16 @@ class OrdersController < ApplicationController
     @order.listing_id = @listing.id
     @order.email = current_user.email
 
-    @tax = @listing.price * @listing.seller.tax_rate * 0.01
-    @total_price = @listing.price + @tax
+    @nr_order = @order.nr_order
+    if !@nr_order
+      @nr_order = 1
+    else
+      @nr_order = @nr_order.to_i
+    end
+
+    @pre_tax = @listing.price * @nr_order * 100
+    @tax = @listing.price * @nr_order * 100 * @listing.seller.tax_rate * 0.01
+    @total_price =  @pre_tax + @tax
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
@@ -90,7 +104,7 @@ class OrdersController < ApplicationController
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
               charge = Stripe::Charge.create(
-              :amount => (@total_price * 100).floor,
+              :amount => @total_price.floor,
               :currency => "usd",
               :customer => customer.id,
               :metadata => {
@@ -104,7 +118,7 @@ class OrdersController < ApplicationController
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
-              :amount => (@total_price * 100).floor,
+              :amount => @total_price.floor,
               :currency => "usd",
               :card => token,
               :metadata => {
@@ -121,7 +135,7 @@ class OrdersController < ApplicationController
           else  #token 
             customer_id = current_user.stripe_customer_id
             charge = Stripe::Charge.create(
-            :amount => (@total_price * 100).floor,
+            :amount => @total_price.floor,
             :currency => "usd",
             :customer => customer_id,
             :metadata => {
@@ -136,8 +150,9 @@ class OrdersController < ApplicationController
           end  #token
           
           # create transfer. WQ TODO.
+          # transferred to merchant: listing * nr_order * 0.971 + tax - 0.4
           transfer = Stripe::Transfer.create(
-            :amount => (@listing.price * 100 * 0.971 - 40).floor,
+            :amount => (@pre_tax * 0.971 + @tax - 40).floor,
             :currency => "usd",
             :recipient => @listing.seller.recipient
             ) 
@@ -147,7 +162,8 @@ class OrdersController < ApplicationController
           flash[:danger] = e.message
         end        
         @order.update_attribute(:order_id, order_id)
-        @listing.nr_order += 1
+        @order.update_attribute(:tax, @tax)
+        @listing.nr_order += @nr_order
         @listing.save
         format.html { redirect_to root_url, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
         format.json { render :show, status: :created, location: @order }
@@ -190,7 +206,7 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:pickup_time)
+      params.require(:order).permit(:pickup_time, :nr_order)
     end
     
     def check_user

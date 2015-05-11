@@ -14,7 +14,14 @@ jQuery(function($){
 				$form.get(0).submit();
 			}
 			return false;
-	});	
+	});
+
+	$('#quantity_update').click(function(event){
+		var nr_order = $('#order_nr_order').val();		
+		var url_append = "?quantity=" + nr_order;
+		$('#quantity_update').attr("href", url_append);
+	});
+
 });
 
 function form_validation() {
