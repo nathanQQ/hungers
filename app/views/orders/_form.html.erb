@@ -51,8 +51,8 @@
           <td class="center"><%= "#{number_to_currency(@listing.price)} * #{@nr_order}" %></td>
         </tr>
         <tr>
-          <td class="center">Sale Tax Rate</td>
-          <td class="center"><%= "#{@listing.seller.tax_rate}%" %></td>
+          <td class="center">Estimated Tax</td>
+          <td class="center"><%= number_to_currency(@tax) %></td>
         </tr>
         <tr>
           <td class="center">Total</td>

@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   before_action :check_user, except: [:sales, :confirm_pickup]
 
   def purchases
-    @orders = Order.all.where(user: current_user).order("created_at DESC")
+    @orders = Order.all.where(user: current_user).order("created_at DESC").page(params[:page])
   end
 
   def sales
@@ -74,8 +74,8 @@ class OrdersController < ApplicationController
       @nr_order = @nr_order.to_i
     end
 
-    @pre_tax = @listing.price * @nr_order * 100
-    @tax = @listing.price * @nr_order * 100 * @listing.seller.tax_rate * 0.01
+    @pre_tax = @listing.price * @nr_order * 100  #in the unit of cent
+    @tax = @pre_tax * @listing.seller.tax_rate * 0.01 #@listing.price * @listing.seller.tax_rate * 0.01 * @nr_order * 100
     @total_price =  @pre_tax + @tax
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
@@ -104,7 +104,7 @@ class OrdersController < ApplicationController
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
               charge = Stripe::Charge.create(
-              :amount => @total_price.floor,
+              :amount => @total_price.ceil,
               :currency => "usd",
               :customer => customer.id,
               :metadata => {
@@ -118,7 +118,7 @@ class OrdersController < ApplicationController
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
-              :amount => @total_price.floor,
+              :amount => @total_price.ceil,
               :currency => "usd",
               :card => token,
               :metadata => {
@@ -135,7 +135,7 @@ class OrdersController < ApplicationController
           else  #token 
             customer_id = current_user.stripe_customer_id
             charge = Stripe::Charge.create(
-            :amount => @total_price.floor,
+            :amount => @total_price.ceil,
             :currency => "usd",
             :customer => customer_id,
             :metadata => {
@@ -152,7 +152,7 @@ class OrdersController < ApplicationController
           # create transfer. WQ TODO.
           # transferred to merchant: listing * nr_order * 0.971 + tax - 0.4
           transfer = Stripe::Transfer.create(
-            :amount => (@pre_tax * 0.971 + @tax - 40).floor,
+            :amount => (@pre_tax * 0.971 + @tax - 40).ceil,
             :currency => "usd",
             :recipient => @listing.seller.recipient
             ) 
