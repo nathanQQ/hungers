@@ -8,25 +8,27 @@
 	</div>
 	<div class="col-md-6">
 		<h3><%= @listing.name %></h3>
-		<p3><%= "by #{@listing.seller.name}(#{@listing.seller.aka_name})" %></p3><br>
+		<p><%= "by #{@listing.seller.name}(#{@listing.seller.aka_name})" %></p>
 		<% if user_signed_in? and current_user.liked? @listing.seller %>
-			<p3><%= link_to "unbookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p3>
+			<p><%= link_to "unbookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
 		<% else %>
-			<p3><%= link_to "bookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p3>
-		<% end %>
-		<br><br><br>
+			<p><%= link_to "bookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
+		<% end %>		
 
-		<p><%= "price: #{number_to_currency(@listing.price)}" %></p>
-		<p><%= "about: #{@listing.description}" %></p>
+		<hr><br>
+		<p><%= link_to "Liked ", like_listing_path(@listing), method: :put %><%= "by #{@listing.get_likes.size}" %></p> 
+		<p><%= "#{@listing.description}" %></p>		
+		<hr>
+
+		<p><%= "#{number_to_currency(@listing.price)}" %></p>
 		<% if @listing.seller.address_line2.blank? %>
-			<p><%= "address: #{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+			<p><%= "#{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
 		<% else %>
-			<p><%= "address: #{@listing.seller.address_line1}, #{@listing.seller.address_line2}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
-		<% end %>
-		<br>
-		<p3><%= link_to "Liked ", like_listing_path(@listing), method: :put %><%= "by #{@listing.get_likes.size}" %></p3> 
-		<br><br><br>
+			<p><%= "#{@listing.seller.address_line1}, #{@listing.seller.address_line2}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<% end %>		
 		
+		<hr>		
+
 		<div class="center">
 			<%= link_to 'Order it now', new_listing_order_path(@listing), :id => :order_it_now, class: "btn btn-primary", data: {no_turbolink: true} %>
 		</div>

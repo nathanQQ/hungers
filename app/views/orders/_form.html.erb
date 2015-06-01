@@ -12,14 +12,19 @@
   <% end %>
   <br><br>
 
-  <h4><%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %></h4><br><br>
-  
-  <div class="form_group">
-    <%= label_tag :nr_order, "how many orders do you want?" %>
+  <div class='order_form'>
+    <h4><%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %></h4>
   </div>
-  <div class="row">
-    <div class="col-md-1">
-      <%= f.select :nr_order, options_for_select([['x1',1],
+
+  <hr><br>
+
+  <div class="form_group">
+    
+    <%=label_tag :nr_order, "How many orders do you want?" %>
+
+    <div class="row">
+      <div class="col-md-1">
+        <%= f.select :nr_order, options_for_select([['x1',1],
                                                     ['x2',2],
                                                     ['x3',3],
                                                     ['x4',4],
@@ -28,13 +33,13 @@
                                                     ['x7',7],
                                                     ['x8',8],
                                                     ['x9',9],
-                                                    ['x10',10]],
-      @nr_order) %>
-    </div>
-    <div class = 'col-md-2'>
-      <div class="form-group">
-        <%= link_to "update quantity", new_listing_order_path(@listing), :id => :quantity_update, data: {no_turbolink: true} %>
-      </div>   
+                                                    ['x10',10]], @nr_order) %>
+      </div>
+      <div class = 'col-md-2'>
+        <div class="form-group">
+          <%= link_to "update quantity", new_listing_order_path(@listing), :id => :quantity_update, data: {no_turbolink: true} %>
+        </div>   
+      </div>
     </div>
   </div>
 
@@ -62,6 +67,8 @@
     </div>
   </div>
 
+  <hr>
+  
   <% if current_user.stripe_customer_id.nil? or current_user.stripe_customer_id.empty? %> <%# customer who haven't saved credit card %>
     <div class="row">
       <div class="col-md-8">
@@ -150,7 +157,7 @@
       </div>
   <% end %>
 
-  <br>
+  <hr>
   
   <div class="form-group">
     <%= f.label :pickup_time, "Select your pickup time" %>
