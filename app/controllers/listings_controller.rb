@@ -89,9 +89,6 @@ class ListingsController < ApplicationController
   # GET /listings/1/edit
   def edit
     @listing = Listing.find(params[:id])
-    if  3.hours.from_now.to_date >= @listing.sold_date 
-      redirect_to root_url, notice: "Not allowed to update this listing!"
-    end
   end
 
   def my_listings

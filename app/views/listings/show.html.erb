@@ -16,7 +16,8 @@
 		<% end %>		
 
 		<hr><br>
-		<p><%= link_to "Liked ", like_listing_path(@listing), method: :put %><%= "by #{@listing.get_likes.size}" %></p> 
+		
+		<p><%# link_to "Liked ", like_listing_path(@listing), method: :put %><%# "by #{@listing.cached_votes_up}" %></p>
 		<p><%= "#{@listing.description}" %></p>		
 		<hr>
 
@@ -34,7 +35,7 @@
 		</div>
 	</div>	
 </div>
-<% if @listing.seller == current_seller %>
+<% if @listing.seller == current_seller and @listing.sold_date != Date.today %>
 	<%= link_to 'Edit', edit_listing_path(@listing) %> |
 	<%= link_to 'Delete', @listing, method: :delete, data: {confirm: 'Are you sure to delete?'}, class: "btn btn-link" %> |
 <% end %>
