@@ -7,6 +7,7 @@
     <th class="text-center">ID</th>
     <th class="text-center">Name</th>
     <th class="text-center">aka Name</th>
+    <th class="text-center">Email</th>
     <th class="text-center">promote</th>
   </tr>
 
@@ -15,6 +16,7 @@
       <td class="center"><%= seller.id %></td>
       <td class="center"><%= seller.name %></td>
       <td class="center"><%= seller.aka_name %></td>
+      <td class="center"><%= seller.email %></td>
       <% if seller.is_promoted == false %>
         <td class="center"><%= link_to 'add promote', management_promote_path(seller, :id => seller.id) %></td>
       <% else %>

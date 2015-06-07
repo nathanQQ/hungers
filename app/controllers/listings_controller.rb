@@ -3,7 +3,7 @@ class ListingsController < ApplicationController
   # define filters: 
   # 1. only seller can add/delete/modify listing - devise's filter
   # 2. only listing's seller can modify the listing - need to define the filter
-  before_action :authenticate_seller!, only: [:new, :create, :destroy, :edit, :update, :my_listings]
+  before_action :authenticate!, only: [:new, :create, :destroy, :edit, :update, :my_listings]
   before_action :check_seller, only: [:edit, :update, :destroy]
   # only user can like a listing
   before_action :check_user, only:[:like, :bookmark]
@@ -163,8 +163,19 @@ class ListingsController < ApplicationController
       params.require(:listing).permit(:name, :description, :price, :image, :sold_date, :country, :routing_number, :account_number)
     end
 
+    def authenticate!
+      if admin_signed_in?
+        true
+      else
+        authenticate_seller!
+      end
+    end
+
     def check_seller
-      if current_seller != @listing.seller
+      if admin_signed_in?
+        true
+      elsif
+        current_seller != @listing.seller
         redirect_to root_url, notice: "Cannot modify the listing belongs to others!"
       end
     end

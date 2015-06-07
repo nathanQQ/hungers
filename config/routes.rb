@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   #admin
   get 'management/show_sellers' => 'management#show_sellers'
   get 'management/promote' => 'management#promote'
+  get 'management/show_listings' => 'management#show_listings'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

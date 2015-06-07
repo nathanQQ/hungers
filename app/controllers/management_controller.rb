@@ -1,8 +1,14 @@
-class ManagementController < ActionController::Base
+#class ManagementController < ActionController::Base
+class ManagementController < ApplicationController
   before_action :authenticate_admin!
 
+  
+  def show_listings
+    @listings = Listing.order("seller_id ASC").page(params[:page])
+  end
+
   def show_sellers
-    @sellers = Seller.order('created_at DESC')
+    @sellers = Seller.order('created_at ASC')
   end
 
   def promote

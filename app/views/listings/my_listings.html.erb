@@ -20,7 +20,3 @@
 <br>
 <%= paginate @listings %>
 
-<% if seller_signed_in? %>
-  <%= link_to 'New Listing', new_listing_path, data: {no_turbolink: true} %>
-<% end %>
-
