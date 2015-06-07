@@ -1,0 +1,25 @@
+<div class="center">
+  <h2>Today's listings</h2><br>
+</div>
+
+<table class="table table-striped table-bordered">
+  <tr>
+    <th class="text-center">Image <i>(click to Edit)</i></th>
+    <th class="text-center">Item</th>
+    <th class="text-center">Seller</th>
+    <th class="text-center">Price</th>
+    <th class="text-center">Sold at</th>
+  </tr>
+  
+  <% @listings.each do |listing| %>
+    <tr>
+      <td class="center"><%= link_to image_tag(listing.image.url(:thumb)), edit_listing_path(listing) %></td>
+      <td class="center"><%= listing.name %></td>
+      <td class="center"><%= listing.seller.name %></td>      
+      <td class="center"><%= number_to_currency(listing.price) %></td>
+      <td class="center"><%= listing.sold_date %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= paginate @listings %>

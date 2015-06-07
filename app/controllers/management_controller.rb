@@ -7,6 +7,10 @@ class ManagementController < ApplicationController
     @listings = Listing.order("seller_id ASC").page(params[:page])
   end
 
+  def show_listings_today
+    @listings = Listing.where(:sold_date => Date.today).order("seller_id ASC").page(params[:page])
+  end
+
   def show_sellers
     @sellers = Seller.order('created_at ASC')
   end
