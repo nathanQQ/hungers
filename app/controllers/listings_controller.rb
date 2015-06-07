@@ -56,7 +56,8 @@ class ListingsController < ApplicationController
     @listings = []
     @sellers = Seller.order(:is_promoted => :desc)
     @sellers.each do |seller|
-      @listings_tmp = seller.listings.where(:sold_date => 3.hours.from_now.to_date).order(:cached_votes_up => :desc)
+      #@listings_tmp = seller.listings.where(:sold_date => 3.hours.from_now.to_date).order(:cached_votes_up => :desc)
+      @listings_tmp = seller.listings.where(:sold_date => 3.hours.from_now.to_date).order(:updated_at => :asc)
       @listings_tmp.each do |listing|
         @listings.append(listing)
       end
