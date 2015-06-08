@@ -8,7 +8,7 @@ class ManagementController < ApplicationController
   end
 
   def show_listings_today
-    @listings = Listing.where(:sold_date => Date.today).order("seller_id ASC").page(params[:page])
+    @listings = Listing.where(:sold_date => 3.hours.from_now.to_date).order("seller_id ASC").page(params[:page])
   end
 
   def show_sellers

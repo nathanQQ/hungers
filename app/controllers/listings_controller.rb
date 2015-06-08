@@ -176,15 +176,15 @@ class ListingsController < ApplicationController
         true
       elsif
         current_seller != @listing.seller
-        redirect_to root_url, notice: "Cannot modify the listing belongs to others!"
+        redirect_to index_weighted_path, notice: "Cannot modify the listing belongs to others!"
       end
     end
     
     def check_user
       if seller_signed_in?
-        redirect_to root_url, notice: "Seller is not allowed to like any listing!"
+        redirect_to index_weighted_path, notice: "Seller is not allowed to like any listing!"
       elsif admin_signed_in?
-        redirect_to root_url, notice: "Admin is not allowed to like any listing!"
+        redirect_to index_weighted_path, notice: "Admin is not allowed to like any listing!"
       elsif !user_signed_in?
         redirect_to user_session_url, notice: "please sign in to continue"
       end

@@ -8,14 +8,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Hungers.me</a>
+      <%= link_to "Hungers.me", root_url, class: "navbar-brand", data: {no_turbolink: true} %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        <li><%= link_to "#{3.hours.from_now.to_date}", index_weighted_path %></li>
         <li><%= link_to "About", pages_about_path %></li>
-        <li><%= link_to "Contact", pages_contact_path%></li>     
+        <li><%= link_to "Contact", pages_contact_path %></li>
       </ul> 
       <ul class="nav navbar-nav navbar-right">
         <% if seller_signed_in? %>
