@@ -11,6 +11,7 @@ class Listing < ActiveRecord::Base
   end
   
   validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
+  validates_with AttachmentSizeValidator, :attributes => :image, :less_than => 1.megabytes
   validates :name, :price, :description, :sold_date, presence: true
   validates :price, numericality: {greater_than: 0}	
 
