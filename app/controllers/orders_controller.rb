@@ -36,10 +36,10 @@ class OrdersController < ApplicationController
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
     if @listing.sold_date < Date.today
-      redirect_to index_weighted_path, notice: "This listing has been expired!"
+      redirect_to listings_path, notice: "This listing has been expired!"
     end
     if @listing.seller.tax_rate.blank?
-      redirect_to index_weighted_path, notice: "Sorry, the seller hasn't updated sales tax info."      
+      redirect_to listings_path, notice: "Sorry, the seller hasn't updated sales tax info."      
     end
     if params[:is_new_cc]
       current_user.stripe_customer_id = nil
@@ -165,7 +165,7 @@ class OrdersController < ApplicationController
         @order.update_attribute(:tax, @tax)
         @listing.nr_order += @nr_order
         @listing.save
-        format.html { redirect_to index_weighted_path, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
+        format.html { redirect_to listings_path, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -211,9 +211,9 @@ class OrdersController < ApplicationController
     
     def check_user
       if seller_signed_in?
-        redirect_to index_weighted_path, notice: "Seller, please sign out first! Placing an order with your buyer account!"
+        redirect_to listings_path, notice: "Seller, please sign out first! Placing an order with your buyer account!"
       elsif admin_signed_in?
-        redirect_to index_weighted_path, notice: "Admin, please sign out first! Placing an order with your buyer account!"
+        redirect_to listings_path, notice: "Admin, please sign out first! Placing an order with your buyer account!"
       elsif !user_signed_in?
         redirect_to user_session_url, notice: "please sign in to continue"
       end

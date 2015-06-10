@@ -68,13 +68,18 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    #if params[:page]
-    #  session[:listing_idex_page] = params[:page]
-    #end
-    #@listings = Listing.order("created_at DESC").page(session[:listing_index_page])
-    @listings = Listing.where(:sold_date => 3.hours.from_now.to_date).order("created_at DESC").page(params[:page])
-    # ordered by most liked
-    #@listings = Listing.order(:cached_votes_up => :desc).page(params[:page])
+
+    #@listings = Listing.where(:sold_date => 3.hours.from_now.to_date).order("created_at DESC").page(params[:page])
+    @listings = []
+    @sellers = Seller.order(:is_promoted => :desc)
+    @sellers.each do |seller|
+      #@listings_tmp = seller.listings.where(:sold_date => 3.hours.from_now.to_date).order(:cached_votes_up => :desc)
+      @listings_tmp = seller.listings.where(:sold_date => 3.hours.from_now.to_date).order(:updated_at => :asc)
+      @listings_tmp.each do |listing|
+        @listings.append(listing)
+      end
+    end
+    @listings = Kaminari.paginate_array(@listings).page(params[:page]).per(8)
   end
 
   # GET /listings/1
@@ -176,15 +181,15 @@ class ListingsController < ApplicationController
         true
       elsif
         current_seller != @listing.seller
-        redirect_to index_weighted_path, notice: "Cannot modify the listing belongs to others!"
+        redirect_to listings_path, notice: "Cannot modify the listing belongs to others!"
       end
     end
     
     def check_user
       if seller_signed_in?
-        redirect_to index_weighted_path, notice: "Seller is not allowed to like any listing!"
+        redirect_to listings_path, notice: "Seller is not allowed to like any listing!"
       elsif admin_signed_in?
-        redirect_to index_weighted_path, notice: "Admin is not allowed to like any listing!"
+        redirect_to listings_path, notice: "Admin is not allowed to like any listing!"
       elsif !user_signed_in?
         redirect_to user_session_url, notice: "please sign in to continue"
       end
