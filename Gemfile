@@ -25,7 +25,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 gem 'bootstrap-sass', '~> 3.3.3'
-gem "paperclip", "~> 4.2"
+gem "paperclip"
 gem 'devise'
 gem "figaro", "~> 1.0"
 gem 'kaminari'
@@ -34,7 +34,7 @@ gem "paranoia", "~> 2.0"
 gem "paperclip-dropbox", ">= 1.1.7"
 gem 'stripe'
 gem 'stripe_event'
-gem 'aws-sdk-v1'
+gem 'aws-sdk'
 
 group :production do
 	gem 'pg'
