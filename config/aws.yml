@@ -1,2 +1,3 @@
 access_key: <%= ENV["ACCESS_KEY_ID"] %>
 secret_access: <%= ENV["SECRET_ACCESS_KEY"] %>
+bucket: <%= ENV["BUCKET_NAME"] %>
