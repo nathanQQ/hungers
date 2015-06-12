@@ -34,6 +34,7 @@ gem "paranoia", "~> 2.0"
 gem "paperclip-dropbox", ">= 1.1.7"
 gem 'stripe'
 gem 'stripe_event'
+gem 'aws-sdk'
 
 group :production do
 	gem 'pg'
