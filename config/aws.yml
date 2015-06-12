@@ -1,7 +1,8 @@
-development:
-	access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
-	secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
-
+#no tab is allowed for indent
 production:
-	access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
-	secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
+    access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
+    secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
+
+development:
+    access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
+    secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
