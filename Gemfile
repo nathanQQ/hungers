@@ -31,7 +31,7 @@ gem "figaro", "~> 1.0"
 gem 'kaminari'
 gem 'acts_as_votable', '~> 0.10.0'
 gem "paranoia", "~> 2.0"
-gem "paperclip-dropbox", ">= 1.1.7"
+#gem "paperclip-dropbox", ">= 1.1.7"
 gem 'stripe'
 gem 'stripe_event'
 gem 'aws-sdk', '< 2.0'
