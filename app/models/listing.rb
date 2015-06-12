@@ -14,7 +14,7 @@ class Listing < ActiveRecord::Base
               :storage => :s3,
               :s3_credentials => Rails.root.join("config/aws.yml"),
               :path => ":styles/:id_:filename",
-                
+              :bucket => "hungersme"  
   end
   
   validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
