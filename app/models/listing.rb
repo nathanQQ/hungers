@@ -12,7 +12,7 @@ class Listing < ActiveRecord::Base
     '''
     has_attached_file   :image, :styles => { :medium => "100x100>", :thumb => "100x100>" }, :default_url => "no-image.jpg",
               :storage => :s3,
-              :s3 => Rails.root.join("config/aws.yml"),
+              :s3_credentials => Rails.root.join("config/aws.yml"),
               :path => ":styles/:id_:filename",
               :bucket => "hungersme"    
   end
