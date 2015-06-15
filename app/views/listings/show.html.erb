@@ -22,6 +22,7 @@
 		<hr>
 
 		<p><%= "#{number_to_currency(@listing.price)}" %></p>
+		<p><%= number_to_phone(@listing.seller.phone) %></p>
 		<% if @listing.seller.address_line2.blank? %>
 			<p><%= "#{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
 		<% else %>

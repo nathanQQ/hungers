@@ -36,31 +36,31 @@
 
   <h3>Business location</h3>
 
-  <div class="from-group">
+  <div class="form-group">
     <%= f.label :address_line1 %>
     <%= f.text_field :address_line1, class: "form-control", :autofocus => true %>    
   </div>
 
-  <div class="from-group">
+  <div class="form-group">
     <%= f.label :address_line2 %>
     <%= f.text_field :address_line2, class: "form-control" %>    
   </div>
       
   <div class="row">
     <div class="col-md-4">
-      <div class="from-group">
+      <div class="form-group">
         <%= f.label :city %>
         <%= f.text_field :city, class: "form-control" %>    
       </div>
     </div>
     <div class="col-md-4">  
-      <div class="from-group">
+      <div class="form-group">
         <%= f.label :state %><br>
         <%= f.select :state, us_states, class: "form-control" %>
       </div>
     </div>
     <div class="col-md-4">  
-      <div class="from-group">
+      <div class="form-group">
         <%= f.label :zip_code %>
         <%= f.text_field :zip_code, class: "form-control" %>    
       </div>
@@ -68,11 +68,15 @@
   </div>  
 
   <h3>Other info</h3>
-  <div class="from-group">
+  <div class="form-group">
     <%= f.label :sales_tax_rate %><i> (only the digits before '%')</i>
     <%= f.text_field :tax_rate, class: "form-control" %>    
   </div>
-
+  <div class="form-group">
+    <%= label_tag :phone %><i> (no dash, parentheses or country code)</i>
+    <%= f.telephone_field :phone, class: "form-control" %>    
+  </div>
+  
   <hr>
 
   <div class="form-group">
