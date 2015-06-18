@@ -4,4 +4,8 @@ class PagesController < ApplicationController
 
   def contact
   end
+
+  def welcome
+  	@disable_container = true
+  end
 end
