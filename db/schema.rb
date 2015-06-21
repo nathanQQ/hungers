@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615173944) do
+ActiveRecord::Schema.define(version: 20150620230355) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -93,6 +93,12 @@ ActiveRecord::Schema.define(version: 20150615173944) do
     t.string   "zip_code"
     t.decimal  "tax_rate"
     t.string   "phone",                  default: "1234567890"
+    t.string   "weekday_open_at",        default: "11 AM"
+    t.string   "weekday_close_at",       default: "9 PM"
+    t.string   "saturday_open_at",       default: "11 AM"
+    t.string   "saturday_close_at",      default: "9 PM"
+    t.string   "sunday_open_at",         default: "11 AM"
+    t.string   "sunday_close_at",        default: "9 PM"
   end
 
   add_index "sellers", ["email"], name: "index_sellers_on_email", unique: true

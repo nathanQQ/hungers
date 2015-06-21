@@ -76,6 +76,51 @@
     <%= label_tag :phone %><i> (no dash, parentheses or country code)</i>
     <%= f.telephone_field :phone, class: "form-control" %>    
   </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :weekday_open_at %>
+        <%= f.select :weekday_open_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :weekday_close_at %>
+        <%= f.select :weekday_close_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :saturday_open_at %>
+        <%= f.select :saturday_open_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :saturday_close_at %>
+        <%= f.select :saturday_close_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>
+  </div>
+
+  <div class="row">  
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :sunday_open_at %>
+        <%= f.select :sunday_open_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <%= f.label :sunday_close_at %>
+        <%= f.select :sunday_close_at, business_hours, class: "form-control" %>    
+      </div>
+    </div>                
+  </div>  
   
   <hr>
 

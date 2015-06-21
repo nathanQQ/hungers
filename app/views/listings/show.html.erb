@@ -13,7 +13,14 @@
 			<p><%= link_to "unbookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
 		<% else %>
 			<p><%= link_to "bookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
-		<% end %>		
+		<% end %>
+		<% if Date.today.saturday? %>
+			<%= "Hours:#{@listing.seller.saturday_open_at} - #{@listing.seller.saturday_close_at}" %>		
+		<% elsif Date.today.sunday? %>
+			<%= "Hours:#{@listing.seller.sunday_open_at} - #{@listing.seller.sunday_close_at}" %>
+		<% else %>
+			<%= "Hours:#{@listing.seller.weekday_open_at} - #{@listing.seller.weekday_close_at}" %>
+		<% end %>
 
 		<hr><br>
 		
