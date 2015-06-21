@@ -165,7 +165,7 @@ class OrdersController < ApplicationController
         @order.update_attribute(:tax, @tax)
         @listing.nr_order += @nr_order
         @listing.save
-        format.html { redirect_to listings_path, notice: "Your order was successfully created! We will send you the receipt by email. Please use it for pick up." }
+        format.html { redirect_to listings_path, notice: "Your order was successfully created!\nYou will receive the order number via email. Please use it for your pick up:)" }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
