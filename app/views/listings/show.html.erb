@@ -14,13 +14,6 @@
 		<% else %>
 			<p><%= link_to "bookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
 		<% end %>
-		<% if Date.today.saturday? %>
-			<%= "Hours:#{@listing.seller.saturday_open_at} - #{@listing.seller.saturday_close_at}" %>		
-		<% elsif Date.today.sunday? %>
-			<%= "Hours:#{@listing.seller.sunday_open_at} - #{@listing.seller.sunday_close_at}" %>
-		<% else %>
-			<%= "Hours:#{@listing.seller.weekday_open_at} - #{@listing.seller.weekday_close_at}" %>
-		<% end %>
 
 		<hr><br>
 		
@@ -28,14 +21,21 @@
 		<p><%= "#{@listing.description}" %></p>		
 		<hr>
 
-		<p><%= "#{number_to_currency(@listing.price)}" %></p>
-		<p><%= number_to_phone(@listing.seller.phone) %></p>
-		<% if @listing.seller.address_line2.blank? %>
-			<p><%= "#{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<p><%= "Price: #{number_to_currency(@listing.price)}" %></p>
+		<% if Date.today.saturday? %>
+			<p><%= "Hours:#{@listing.seller.saturday_open_at} - #{@listing.seller.saturday_close_at}" %></p>
+		<% elsif Date.today.sunday? %>
+			<p><%= "Hours:#{@listing.seller.sunday_open_at} - #{@listing.seller.sunday_close_at}" %></p>
 		<% else %>
-			<p><%= "#{@listing.seller.address_line1}, #{@listing.seller.address_line2}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+			<p><%= "Hours:#{@listing.seller.weekday_open_at} - #{@listing.seller.weekday_close_at}" %></p>
 		<% end %>		
-		
+		<p><%= "Tel: #{number_to_phone(@listing.seller.phone)}" %></p>
+		<% if @listing.seller.address_line2.blank? %>
+			<p><%= "Address: #{@listing.seller.address_line1}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<% else %>
+			<p><%= "Address: #{@listing.seller.address_line1}, #{@listing.seller.address_line2}, #{@listing.seller.city}, #{@listing.seller.state}, #{@listing.seller.zip_code}" %></p>
+		<% end %>		
+
 		<hr>		
 
 		<div class="center">
