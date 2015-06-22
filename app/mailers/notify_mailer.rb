@@ -1,5 +1,5 @@
 class NotifyMailer < ActionMailer::Base
-  default :from  => ENV["EMAIL_USER"] #WQ TODO
+  default :from  => ENV["EMAIL_USER"]
 
   def notify_seller charge
     @customer = charge.metadata.email

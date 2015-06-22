@@ -1,4 +1,4 @@
-//TODO: to display multiple background images in jumbotron
+//WQ TODO 3: to display multiple background images in jumbotron
 /*
 jQuery(function($){
     var interval = 3;// Secs

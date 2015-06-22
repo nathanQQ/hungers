@@ -108,13 +108,10 @@ class OrdersController < ApplicationController
               :currency => "usd",
               :customer => customer.id,
               :metadata => {
-                #WQ TODO
-                #:email => current_user.email 
-                :email => "wuwq85@gmail.com",
+                :email => current_user.email,                 
                 :order_id => order_id,
                 :seller_address => seller_address,
-                #:seller_email => seller_email
-                :seller_email => "wuwenqiancn@gmail.com"}
+                :seller_email => seller_email}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -122,13 +119,10 @@ class OrdersController < ApplicationController
               :currency => "usd",
               :card => token,
               :metadata => {
-                #WQ TODO
-                #:email => current_user.email 
-                :email => "wuwq85@gmail.com",
+                :email => current_user.email, 
                 :order_id => order_id,
                 :seller_address => seller_address,
-                #:seller_email => seller_email
-                :seller_email => "wuwenqiancn@gmail.com"}
+                :seller_email => seller_email}
               ) 
             end   #does_remember_card      
 
@@ -139,17 +133,14 @@ class OrdersController < ApplicationController
             :currency => "usd",
             :customer => customer_id,
             :metadata => {
-              #WQ TODO
-              #:email => current_user.email 
-              :email => "wuwq85@gmail.com",
+              :email => current_user.email, 
               :order_id => order_id,
               :seller_address => seller_address,
-              #:seller_email => seller_email
-              :seller_email => "wuwenqiancn@gmail.com"}
+              :seller_email => seller_email}
             )            
           end  #token
           
-          # create transfer. WQ TODO.
+          # create transfer. WQ TODO 3
           # transferred to merchant: listing * nr_order * 0.971 + tax - 0.4
           transfer = Stripe::Transfer.create(
             :amount => (@pre_tax * 0.971 + @tax - 40).ceil,

@@ -114,7 +114,10 @@ class ListingsController < ApplicationController
       
       recipient = Stripe::Recipient.create(
       :name => current_seller.name,
-      :type => "individual", #WQ TODO
+      # WQ TODO 3: set recipient type corporate, this corporate/restaurant name will be used. Ask seller the bank corporate account
+      # If indiviual, the full legal name(first+last) is required. 
+      #:type => "individual",
+      :type => "corporation",
       :bank_account => token
       )  
       

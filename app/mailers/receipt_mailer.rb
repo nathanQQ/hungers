@@ -1,5 +1,5 @@
 class ReceiptMailer < ActionMailer::Base
-  default :from  => ENV["EMAIL_USER"] #WQ TODO
+  default :from  => ENV["EMAIL_USER"]
 
   def send_receipt charge
     @charge = charge

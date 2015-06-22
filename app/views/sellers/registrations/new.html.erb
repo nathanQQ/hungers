@@ -4,12 +4,12 @@
   <%= devise_error_messages! %>
 
   <div class="form-group">
-    <%= f.label :name %>
+    <%= f.label :name %><i> (your legal corporation name)</i>
     <%= f.text_field :name, autofocus: true, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :aka_name %>
+    <%= f.label :aka_name %><i> (Can be the name in another language. Optional.)</i>
     <%= f.text_field :aka_name, class: "form-control" %>
   </div>  
 
@@ -35,7 +35,7 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :address_line2 %>
+    <%= f.label :address_line2 %><i> (Optional)</i>
     <%= f.text_field :address_line2, class: "form-control" %>    
   </div>
       
