@@ -33,7 +33,7 @@
       <td class="center"><%= order.order_id %></td>      
       <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M") %></td>
       <td class="center"><%= order.created_at.getlocal.strftime("%H:%M, %B %-d, %Y") %></td>
-      <td class="center"><%= link_to "#{order.is_pickedup}", confirm_pickup_path(order, :id => order.id), class: "btn btn-default" %></td>
+      <td class="center"><%= link_to "#{order.is_pickedup}", confirm_pickup_path(order, :id => order.id), class: "btn btn-default", data: {no_turbolink: true} %></td>
     </tr>
   <% end %>
 </table>
