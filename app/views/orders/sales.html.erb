@@ -1,6 +1,14 @@
-<div class="center">
-  <h2>Your sales history Today</h2><br>
-</div>
+<% if !(@sales_month = params[:month]) %>
+  <div class="center">
+    <h2>Your sales history Today</h2><br>
+  </div>
+<% else %>
+  <div class="center">
+    <h2>
+      <%= "Your sales history in #{@month_to_time.strftime("%B")}" %>
+    </h2><br>
+  </div>
+<% end %>
 
 <table class="table table-striped table-bordered">
   <tr>
@@ -29,6 +37,24 @@
     </tr>
   <% end %>
 </table>
+
+<div class="form_group">
+  <%=label_tag :sales_month, "show sales history by month" %>
+  <div class="row">
+    <div class="col-md-1">
+      <%= select_tag :sales_month, options_for_select([["#{Date.today.last_month.strftime("%B")}",Date.today.month - 1],
+                                                       ["#{Date.today.last_month.last_month.strftime("%B")}",Date.today.month - 2],
+                                                       ["#{Date.today.last_month.last_month.last_month.strftime("%B")}",Date.today.month - 3],
+                                                       ["#{Date.today.last_month.last_month.last_month.last_month.strftime("%B")}",Date.today.month - 4]], @sales_month) %>
+    </div>
+    <div class = 'col-md-4'>
+      <div class="form-group">
+        <%= link_to "update month", sales_path, :id => :sales_month_update, data: {no_turbolink: true} %> |
+        <%= link_to "sales today", sales_path, data: {no_turbolink: true} %>
+      </div>   
+    </div>
+  </div>
+</div>
 
 <%= paginate @orders %>
 

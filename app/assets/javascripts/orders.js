@@ -22,6 +22,12 @@ jQuery(function($){
 		$('#quantity_update').attr("href", url_append);
 	});
 
+	$('#sales_month_update').click(function(event){
+		var month = $('#sales_month').val();		
+		var url_append = "?month=" + month;
+		$('#sales_month_update').attr("href", url_append);
+	});	
+
 });
 
 function form_validation() {

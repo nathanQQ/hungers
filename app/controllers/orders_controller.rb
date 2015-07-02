@@ -9,8 +9,17 @@ class OrdersController < ApplicationController
   end
 
   def sales
-    @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
-    #@orders = Order.all.where(:seller => current_seller).order("pickup_time DESC").page(params[:page])
+    if !(@sales_month = params[:month])
+      #show sales history of today
+      @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
+    else
+      #show sales history by month.
+      #Note: if the pickup date of a listing is the first date of a month, all the orders made in pior month will be treated as the orders in current month.
+      #It means: orders made on the last date(last 3 hours specifically) of each month will be counted in the next month
+      @sales_month = @sales_month.to_i
+      @month_to_time = Date::MONTHNAMES[@sales_month].to_time  
+      @orders = Order.all.where(:seller => current_seller, :pickup_time => (@month_to_time.at_beginning_of_month)..@month_to_time.at_end_of_month).order("created_at ASC").page(params[:page])
+    end
   end
 
   def confirm_pickup
