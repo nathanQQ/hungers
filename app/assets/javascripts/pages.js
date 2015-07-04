@@ -1,15 +1,13 @@
-//WQ TODO 3: to display multiple background images in jumbotron
-/*
+
 jQuery(function($){
-    var interval = 3;// Secs
+    var interval = 4;// Secs
     var images = [
-       ,"https://dl.dropboxusercontent.com/s/xywoxrldoi52l28/fried%20jiaozi.jpeg?dl=0"
-       ,"https://dl.dropboxusercontent.com/s/bydelhr6wytwon6/salmon.jpg?dl=0"
-       ,"https://dl.dropboxusercontent.com/s/oavnlj9l2ipim0m/about_page_pic.jpeg?dl=0"
+        "https://s3-us-west-1.amazonaws.com/hungersme/lobster+noodle.jpg"
+       ,"https://s3-us-west-1.amazonaws.com/hungersme/cheesecake.jpg"
+       ,"https://s3-us-west-1.amazonaws.com/hungersme/mini-chocolate-raspberry-cheesecakes.jpg"
     ];
 
-    var idx = 0; 
-    var limitCount = 0;
+    var idx = 1; 
     var myInterval = setInterval(function() {
        if (idx >= images.length)  
        		idx = 0;
@@ -17,4 +15,3 @@ jQuery(function($){
        idx++;
     	}, interval*1000);
 });
-*/
