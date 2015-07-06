@@ -22,9 +22,9 @@
 		<hr>
 
 		<p><%= "Price: #{number_to_currency(@listing.price)}" %></p>
-		<% if Date.today.saturday? %>
+		<% if @listing.sold_date.saturday? %>
 			<p><%= "Hours:#{@listing.seller.saturday_open_at} - #{@listing.seller.saturday_close_at}" %></p>
-		<% elsif Date.today.sunday? %>
+		<% elsif @listing.sold_date.sunday? %>
 			<p><%= "Hours:#{@listing.seller.sunday_open_at} - #{@listing.seller.sunday_close_at}" %></p>
 		<% else %>
 			<p><%= "Hours:#{@listing.seller.weekday_open_at} - #{@listing.seller.weekday_close_at}" %></p>

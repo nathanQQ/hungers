@@ -14,9 +14,9 @@
 
   <div class='form_group'>
     <%= label_tag :order_summary, "YOUR NEW ORDER: #{@listing.name} FROM #{@listing.seller.name}" %>
-    <% if Date.today.saturday? %>
+    <% if @listing.sold_date.saturday? %>
       <i><%= "(Hours:#{@listing.seller.saturday_open_at} - #{@listing.seller.saturday_close_at})" %></i>   
-    <% elsif Date.today.sunday? %>
+    <% elsif @listing.sold_date.sunday? %>
       <i><%= "(Hours:#{@listing.seller.sunday_open_at} - #{@listing.seller.sunday_close_at})" %></i>
     <% else %>
       <i><%= "(Hours:#{@listing.seller.weekday_open_at} - #{@listing.seller.weekday_close_at})" %></i>
