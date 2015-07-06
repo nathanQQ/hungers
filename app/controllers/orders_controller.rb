@@ -99,6 +99,12 @@ class OrdersController < ApplicationController
             seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.address_line2 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
           end
           seller_email = @listing.seller.email
+          purchased_item = @listing.name
+          purchased_amount = @nr_order
+          total_price = @total_price
+          pickup_time = @order.pickup_time
+          seller = Seller.find(@order.seller_id)
+          seller_name = seller.name
 
           
           #there is credit card token created by js due to new customer
@@ -119,8 +125,13 @@ class OrdersController < ApplicationController
               :metadata => {
                 :email => current_user.email,                 
                 :order_id => order_id,
+                :seller_name => seller_name,
                 :seller_address => seller_address,
-                :seller_email => seller_email}
+                :seller_email => seller_email,
+                :purchased_item => purchased_item,
+                :purchased_amount => purchased_amount,
+                :total_price => total_price,
+                :pickup_time => pickup_time}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -130,9 +141,13 @@ class OrdersController < ApplicationController
               :metadata => {
                 :email => current_user.email, 
                 :order_id => order_id,
+                :seller_name => seller_name,
                 :seller_address => seller_address,
-                :seller_email => seller_email}
-              ) 
+                :seller_email => seller_email,
+                :purchased_item => purchased_item,
+                :purchased_amount => purchased_amount,
+                :total_price => total_price,
+                :pickup_time => pickup_time}              ) 
             end   #does_remember_card      
 
           else  #token 
@@ -144,8 +159,13 @@ class OrdersController < ApplicationController
             :metadata => {
               :email => current_user.email, 
               :order_id => order_id,
+              :seller_name => seller_name,
               :seller_address => seller_address,
-              :seller_email => seller_email}
+              :seller_email => seller_email,
+              :purchased_item => purchased_item,
+              :purchased_amount => purchased_amount,
+              :total_price => total_price,
+              :pickup_time => pickup_time}
             )            
           end  #token
           
