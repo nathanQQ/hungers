@@ -101,7 +101,6 @@ class OrdersController < ApplicationController
           seller_email = @listing.seller.email
           purchased_item = @listing.name
           purchased_amount = @nr_order
-          total_price = @total_price
           pickup_time = @order.pickup_time
           seller = Seller.find(@order.seller_id)
           seller_name = seller.name
@@ -130,7 +129,7 @@ class OrdersController < ApplicationController
                 :seller_email => seller_email,
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
-                :total_price => total_price,
+                :total_price => (@total_price.ceil)/100.0,
                 :pickup_time => pickup_time}
               )
             else  #does_remember_card
@@ -146,7 +145,7 @@ class OrdersController < ApplicationController
                 :seller_email => seller_email,
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
-                :total_price => total_price,
+                :total_price => (@total_price.ceil)/100.0,
                 :pickup_time => pickup_time}              ) 
             end   #does_remember_card      
 
@@ -164,7 +163,7 @@ class OrdersController < ApplicationController
               :seller_email => seller_email,
               :purchased_item => purchased_item,
               :purchased_amount => purchased_amount,
-              :total_price => total_price,
+              :total_price => (@total_price.ceil)/100.0,
               :pickup_time => pickup_time}
             )            
           end  #token
