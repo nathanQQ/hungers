@@ -8,24 +8,6 @@ body {
   line-height: 18px;
 }
 
-
-.jumbotron{
-  background-image: url('http://s3-us-west-1.amazonaws.com/hungersme/lobster+noodle.jpg');
-  height: 550px;
-  color: white;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 0 !important;
-  font-weight: bold;
-  text-align: center;
-  margin-top: -9px;
-  p { 
-  color: white;
-  font: helvetica;
-  }
-}
-
-
 .col-md-3:nth-child(4n+1){
 	clear: left;
 }
@@ -58,21 +40,79 @@ body {
 	font-size: 30px;
 }
 
-.sub-head {
-	font-family: guardian-egyptt, georgia, serif;
-	font-size: 32px;
-	font-weight: 500;
-	text-aligh: center;
-	word-spacing: 0px;
-	background-color: #FFFFFF;
-	color: #22d2e2;
-	height: 36px;
-	width: 980px;
-	display: block;
-}
-
 .order_form {
 	h4 {
 		font-size: 12px;
 	}
+}
+
+
+.jumbotron{
+  background-image: url('http://s3-us-west-1.amazonaws.com/hungersme/lobster+noodle.jpg');
+  height: 550px;
+  color: white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0 !important;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -9px;
+  p {
+  color: white;
+  font: helvetica;
+  }
+}
+
+.section-head {
+  height: 100px;
+  color: black;
+  background-color: #F5F5F5;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0 !important;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.section-body {
+  height: 150px;
+  color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 0 !important;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 5px;
+}
+
+.section-head .title {
+	font-family: guardian-egyptt, georgia, serif;
+	font-size: 32px;
+	font-weight: 500;
+	word-spacing: 0px;
+	color: #d5641c;
+	display: block;
+	i {
+		font-size: 22px;
+	}
+}
+
+.section-body .sub-title {
+	font-family: guardian-egyptt, georgia, serif;
+	font-size: 22px;
+	font-weight: 500;
+	word-spacing: 0px;
+	color: #d5641c;
+	display: block;
+}
+
+.text {
+	font-family: guardian-egyptt, georgia, serif;
+	font-size: 18px;
+	font-weight: 100;
+	word-spacing: 0px;
+	color: black;
+	display: block;
+	line-height: 150%;
 }
