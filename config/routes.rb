@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :orders
     member do
       put "like", to: "listings#like"
-      put "bookmark", to: "listings#bookmark"
+      put "bookmark", to: "listings#bookmark"      
     end
     get 'page/:page', :action => :index, :on => :collection  # it is for SEO friendly.
   end
@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get 'sales' => "orders#sales"
   get 'my_listings' => "listings#my_listings"
   get 'confirm_pickup' => 'orders#confirm_pickup'
+  get 'listing_sold_date_updated' => "listings#listing_sold_date_updated"
 
   #admin
   get 'management/show_sellers' => 'management#show_sellers'

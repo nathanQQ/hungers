@@ -43,7 +43,8 @@
 		</div>
 	</div>	
 </div>
+
 <% if (@listing.seller == current_seller and @listing.sold_date != Date.today) or admin_signed_in? %>
-	<%= link_to 'Edit', edit_listing_path(@listing) %> |
+	<%= link_to 'Edit', edit_listing_path(@listing), data: {no_turbolink: true} %> |
 	<%= link_to 'Delete', @listing, method: :delete, data: {confirm: 'Are you sure to delete?'}, class: "btn btn-link" %>
 <% end %>

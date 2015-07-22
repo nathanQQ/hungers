@@ -7,7 +7,14 @@ class ListingsController < ApplicationController
   before_action :check_seller, only: [:edit, :update, :destroy]
   # only user can like a listing
   before_action :check_user, only:[:like, :bookmark]
+
   
+  def listing_sold_date_updated
+    @listings = Listing.where(:seller_id => current_seller.id)
+    respond_to do |format|
+      format.json {}
+    end
+  end
 
   #remember one restaurant
   def bookmark
@@ -197,4 +204,5 @@ class ListingsController < ApplicationController
         redirect_to user_session_url, notice: "please sign in to continue"
       end
     end    
+
 end
