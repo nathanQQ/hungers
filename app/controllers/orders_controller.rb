@@ -130,7 +130,7 @@ class OrdersController < ApplicationController
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
                 :total_price => (@total_price.ceil)/100.0,
-                :pickup_time => pickup_time}
+                :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
@@ -146,7 +146,8 @@ class OrdersController < ApplicationController
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
                 :total_price => (@total_price.ceil)/100.0,
-                :pickup_time => pickup_time}              ) 
+                :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}              
+              ) 
             end   #does_remember_card      
 
           else  #token 
@@ -164,7 +165,7 @@ class OrdersController < ApplicationController
               :purchased_item => purchased_item,
               :purchased_amount => purchased_amount,
               :total_price => (@total_price.ceil)/100.0,
-              :pickup_time => pickup_time}
+              :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
             )            
           end  #token
           

@@ -12,7 +12,7 @@ class ReceiptMailer < ActionMailer::Base
     @purchased_item = charge.metadata.purchased_item
     @purchased_amount = charge.metadata.purchased_amount
     @total_price = charge.metadata.total_price
-    @pickup_time = charge.metadata.pickup_time.strftime("%H:%M, %B %-d, %Y")    
+    @pickup_time = charge.metadata.pickup_time   
     mail(:to => @customer, :subject => "Your Hungers.me order")
   end
 end
