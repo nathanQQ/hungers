@@ -1,3 +1,3 @@
 json.array!(@listings) do |listing|
-  json.extract! listing, :sold_date
+  json.extract! listing, :id, :sold_date
 end

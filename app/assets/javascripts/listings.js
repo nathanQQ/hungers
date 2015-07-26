@@ -9,7 +9,7 @@ jQuery(function($){
 
 	$(".edit_listing").submit(function(event){
 		$('input[type=submit]').attr('disabled',true);
-		$.getJSON("/listing_sold_date_updated", listingUpdateResponseHandler);
+		$.getJSON("/listing_sold_date_updated",listingUpdateResponseHandler);
 		return false;
 	});
 });
@@ -35,6 +35,7 @@ function listingCreateResponseHandler(data) {
 	var $form = $('#new_listing');
 	var tmp = 0;
 	var is_duplicate = false;
+	
 	for (; tmp < data.length; tmp++) {
 		if (data[tmp].sold_date == new_sold_date) {					
 			is_duplicate = true;
@@ -58,9 +59,14 @@ function listingCreateResponseHandler(data) {
 function listingUpdateResponseHandler(data) {
 	var new_sold_date = $("#listing_sold_date").val();
 	var $form = $('.edit_listing');
+	var listing_id = $form.attr('id').split('_')[2];
 	var tmp = 0;
 	var is_duplicate = false;
+
 	for (; tmp < data.length; tmp++) {
+		if (data[tmp].id == listing_id) {
+			continue;
+		}
 		if (data[tmp].sold_date == new_sold_date) {					
 			is_duplicate = true;
 			alert("You already have a listing for sale on the selected date. Please pick up another day!");	
