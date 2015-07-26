@@ -1,6 +1,7 @@
 <%# "Please customize the receipt here " %>
 <%= "Dear #{@customer}, thanks for orderring #{@purchased_amount}x #{@purchased_item} from #{@seller_name}" %><br>
-<%= "Your order number is: #{@order_id}" %><br>
-<%= "Your order total will be #{number_to_currency(@total_price)}"%><br>
-<%= "Your scheduled pickup time is #{@pickup_time}" %><br>
-<%= "The pick up address: #{@address}" %><br>
+<%= "Order number is: #{@order_id}" %><br>
+<%= "Order total will be #{number_to_currency(@total_price)}"%><br>
+<%= "Scheduled pickup time is #{@pickup_time.strftime("%I:%M%p, %F")}" %><br>
+<%= "Pick up address: #{@address}" %><br><br>
+<%= "Hungers.me helps you choose your favorite daily meal in a super simple way." %>
