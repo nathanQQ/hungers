@@ -4,10 +4,11 @@
   </div>
 <% else %>
   <div class="center">
-    <h2>
-      <%= "Your sales history in #{@month_to_time.strftime("%B")}" %>
-    </h2><br>
+    <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
   </div>
+  <div class="text">
+    <h4><%= "Total sales tax for this month is #{number_to_currency(@sale_tax / 100.0)}" %></h4><br>
+  </div>  
 <% end %>
 
 <table class="table table-striped table-bordered">
