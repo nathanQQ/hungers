@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
       #It means: orders made on the last date(last 3 hours specifically) of each month will be counted in the next month
       @sales_month = @sales_month.to_i
       @month_to_time = Date::MONTHNAMES[@sales_month].to_time  
-      @orders = Order.all.where(:seller => current_seller, :pickup_time => (@month_to_time.at_beginning_of_month)..@month_to_time.at_end_of_month).order("created_at ASC").page(params[:page])
+      @orders = Order.all.where(:seller => current_seller, :pickup_time => (@month_to_time.at_beginning_of_month)..@month_to_time.at_end_of_month).order("created_at ASC")
       @sale_tax = 0
       @orders.each do |order|
         @sale_tax = @sale_tax + order.tax

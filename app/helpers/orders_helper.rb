@@ -55,4 +55,9 @@ module OrdersHelper
 	      ['Wyoming', 'WY']
 	    ]
 	end
+	def us_states_ca_only
+	    [
+	      ['California', 'CA']
+	    ]
+	end	
 end
