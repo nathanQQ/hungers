@@ -7,7 +7,8 @@
     <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
   </div>
   <div class="text">
-    <h4><%= "Total sales tax for this month is #{number_to_currency(@sale_tax / 100.0)}" %></h4><br>
+    <h4><%= "Total sales tax collected: #{number_to_currency(@sale_tax / 100.0)}" %></h4>
+    <h4><%= "Gross sale: #{number_to_currency(@total_sale)}" %></h4><br>
   </div>  
 <% end %>
 

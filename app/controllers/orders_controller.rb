@@ -20,8 +20,10 @@ class OrdersController < ApplicationController
       @month_to_time = Date::MONTHNAMES[@sales_month].to_time  
       @orders = Order.all.where(:seller => current_seller, :pickup_time => (@month_to_time.at_beginning_of_month)..@month_to_time.at_end_of_month).order("created_at ASC")
       @sale_tax = 0
+      @total_sale = 0
       @orders.each do |order|
         @sale_tax = @sale_tax + order.tax
+        @total_sale = @total_sale + order.nr_order * order.listing.price
       end    
     end
   end
@@ -88,7 +90,7 @@ class OrdersController < ApplicationController
     end
 
     @pre_tax = @listing.price * @nr_order * 100  #in the unit of cent
-    @tax = @pre_tax * @listing.seller.tax_rate * 0.01 #@listing.price * @listing.seller.tax_rate * 0.01 * @nr_order * 100
+    @tax = (@pre_tax * @listing.seller.tax_rate * 0.01).ceil
     @total_price =  @pre_tax + @tax
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
@@ -122,7 +124,7 @@ class OrdersController < ApplicationController
 
               current_user.update_attribute(:stripe_customer_id, customer.id)
               charge = Stripe::Charge.create(
-              :amount => @total_price.ceil,
+              :amount => @total_price,
               :currency => "usd",
               :customer => customer.id,
               :metadata => {
@@ -133,12 +135,12 @@ class OrdersController < ApplicationController
                 :seller_email => seller_email,
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
-                :total_price => (@total_price.ceil)/100.0,
+                :total_price => @total_price/100.0,
                 :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
               )
             else  #does_remember_card
               charge = Stripe::Charge.create(
-              :amount => @total_price.ceil,
+              :amount => @total_price,
               :currency => "usd",
               :card => token,
               :metadata => {
@@ -149,7 +151,7 @@ class OrdersController < ApplicationController
                 :seller_email => seller_email,
                 :purchased_item => purchased_item,
                 :purchased_amount => purchased_amount,
-                :total_price => (@total_price.ceil)/100.0,
+                :total_price => @total_price/100.0,
                 :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}              
               ) 
             end   #does_remember_card      
@@ -157,7 +159,7 @@ class OrdersController < ApplicationController
           else  #token 
             customer_id = current_user.stripe_customer_id
             charge = Stripe::Charge.create(
-            :amount => @total_price.ceil,
+            :amount => @total_price,
             :currency => "usd",
             :customer => customer_id,
             :metadata => {
@@ -168,7 +170,7 @@ class OrdersController < ApplicationController
               :seller_email => seller_email,
               :purchased_item => purchased_item,
               :purchased_amount => purchased_amount,
-              :total_price => (@total_price.ceil)/100.0,
+              :total_price => @total_price/100.0,
               :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
             )            
           end  #token
@@ -184,11 +186,11 @@ class OrdersController < ApplicationController
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
-        end        
-        @order.update_attribute(:order_id, order_id)
-        @order.update_attribute(:tax, @tax)
-        @listing.nr_order += @nr_order
-        @listing.save
+          @order.update_attribute(:order_id, order_id)
+          @order.update_attribute(:tax, @tax)
+          @listing.nr_order += @nr_order
+          @listing.save
+        end #begin 
         format.html { redirect_to listings_path, notice: "Your order was successfully created!\nYou will receive the order number via email. Please use it for your pick up:)" }
         format.json { render :show, status: :created, location: @order }
       else
