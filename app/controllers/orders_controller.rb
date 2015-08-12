@@ -92,9 +92,9 @@ class OrdersController < ApplicationController
     #all the variables are in the unit of cent, and round up to 1 cent
     @pre_tax = @listing.price * @nr_order * 100
     @tax = (@pre_tax * @listing.seller.tax_rate * 0.01).ceil
-    @total_price =  @pre_tax + @tax
-    @transaction_fee = (@totl_price * 0.029 + 45).ceil
-    @transfer_to_seller = @total_price - @transaction_fee
+    @total_price =  (@pre_tax + @tax).ceil #ceil is to make stripe happy.
+    @transaction_fee = (@total_price * 0.029 + 45).ceil
+    @transfer_to_seller = (@total_price - @transaction_fee).floor #floor is also to make stripe happy.
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
@@ -188,11 +188,12 @@ class OrdersController < ApplicationController
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
-          @order.update_attribute(:order_id, order_id)
-          @order.update_attribute(:tax, @tax)
-          @listing.nr_order += @nr_order
-          @listing.save
         end #begin 
+        
+        @order.update_attribute(:order_id, order_id)
+        @order.update_attribute(:tax, @tax)
+        @listing.nr_order += @nr_order
+        @listing.save
         format.html { redirect_to listings_path, notice: "Your order was successfully created!\nYou will receive the order number via email. Please use it for your pick up:)" }
         format.json { render :show, status: :created, location: @order }
       else
