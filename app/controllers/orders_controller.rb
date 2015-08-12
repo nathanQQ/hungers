@@ -89,9 +89,12 @@ class OrdersController < ApplicationController
       @nr_order = @nr_order.to_i
     end
 
-    @pre_tax = @listing.price * @nr_order * 100  #in the unit of cent
+    #all the variables are in the unit of cent, and round up to 1 cent
+    @pre_tax = @listing.price * @nr_order * 100
     @tax = (@pre_tax * @listing.seller.tax_rate * 0.01).ceil
     @total_price =  @pre_tax + @tax
+    @transaction_fee = (@totl_price * 0.029 + 45).ceil
+    @transfer_to_seller = @total_price - @transaction_fee
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
@@ -175,10 +178,9 @@ class OrdersController < ApplicationController
             )            
           end  #token
           
-          # create transfer. WQ TODO 3
-          # transferred to merchant: listing * nr_order * 0.971 + tax - 0.4
+          # create transfer.
           transfer = Stripe::Transfer.create(
-            :amount => (@pre_tax * 0.971 + @tax - 40).ceil,
+            :amount => @transfer_to_seller,
             :currency => "usd",
             :recipient => @listing.seller.recipient
             ) 
