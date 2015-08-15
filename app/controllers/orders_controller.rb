@@ -50,8 +50,8 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @listing = Listing.find(params[:listing_id])
-    if @listing.sold_date < Date.today
-      redirect_to listings_path, notice: "This listing has been expired!"
+    if @listing.sold_date != 3.hours.from_now.to_date
+      redirect_to listings_path, notice: "Sorry,this listing is not for sale today!"
     end
     if @listing.seller.tax_rate.blank?
       redirect_to listings_path, notice: "Sorry, the seller hasn't updated sales tax info."      
