@@ -3,17 +3,22 @@ jQuery(function($){
 	Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
 	$('#new_order').submit(function(event){
 		var $form = $(this);
-			if ($('input').length > 6) {
-				$('input[type=submit]').attr('disabled',true);
-				if (!form_validation())
-					return false;
-				else
-					Stripe.card.createToken($form, orderStripeResponseHandler);
-			}
-			else {
-				$form.get(0).submit();
-			}
+		if (!(pickup_time_validation())) {			
+			$('input[type=submit]').attr('disabled',false);
 			return false;
+		}
+
+		if ($('input').length > 6) {
+			$('input[type=submit]').attr('disabled',true);
+			if (!form_validation())
+				return false;
+			else
+				Stripe.card.createToken($form, orderStripeResponseHandler);
+		}
+		else {
+			$form.get(0).submit();
+		}
+		return false;
 	});
 
 	$('#quantity_update').click(function(event){
@@ -50,6 +55,19 @@ function form_validation() {
 	else {
 		return true;
 	}
+}
+
+function pickup_time_validation() {
+	$('input[type=submit]').attr('disabled',true);
+	var pickup_time = new Date($('#order_pickup_time').val());
+	var current_time = new Date();	
+	//Date.getTime returns the number of milliseconds since 1970/01/01:
+	if (pickup_time.getTime() < (current_time.getTime() + 30 * 60 * 1000)) {
+		alert("please place your order online at least 30 minutes before picking up");
+		return false;
+	}
+	return true;
+
 }
 
 function orderStripeResponseHandler(status, response){
