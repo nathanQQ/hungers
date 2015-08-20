@@ -8,7 +8,12 @@
 	</div>
 	<div class="col-md-6">
 		<h3><%= @listing.name %></h3>
-		<p><%= "by #{@listing.seller.name}(#{@listing.seller.aka_name})" %></p>
+        <p>
+          <%= "by #{@listing.seller.name}" %>
+          <% if !@listing.seller.aka_name.blank? %>
+            <%= "(#{@listing.seller.aka_name})" %>
+          <% end %>
+        </p>
 		<% if user_signed_in? and current_user.liked? @listing.seller %>
 			<p><%= link_to "unbookmark #{@listing.seller.name}", bookmark_listing_path(@listing), method: :put %></p>
 		<% else %>

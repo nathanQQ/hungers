@@ -27,8 +27,10 @@
                 <li class="divider"></li>  
                 <li><%= link_to "My sales", sales_path, data: {no_turbolink: true} %></li>
                 <li class="divider"></li> 
+                <li><%= link_to 'New Listing', new_listing_path, data: {no_turbolink: true} %></li>
+                <li class="divider"></li> 
                 <li><%= link_to "Edit profile",edit_seller_registration_path%></li> 
-                <li><%= link_to "Sign out of #{current_seller.name}",destroy_seller_session_path, method: :delete%></li>            
+                <li><%= link_to "Sign out of #{current_seller.name}",destroy_seller_session_path, method: :delete%></li>
               </ul>              
           </li>
         <% elsif admin_signed_in? %>
