@@ -23,8 +23,12 @@ jQuery(function($){
 
 	$('#quantity_update').click(function(event){
 		var nr_order = $('#order_nr_order').val();		
-		var url_append = "?quantity=" + nr_order;
-		$('#quantity_update').attr("href", url_append);
+		var href_property_append = "?quantity=" + nr_order;
+		var current_url = window.location.href;
+		if (current_url.search('is_new_cc') >= 0) {
+			href_property_append += '&is_new_cc=true';
+		}
+		$('#quantity_update').attr("href", href_property_append);
 	});
 
 	$('#sales_month_update').click(function(event){
