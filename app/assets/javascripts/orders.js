@@ -63,10 +63,17 @@ function form_validation() {
 
 function pickup_time_validation() {
 	$('input[type=submit]').attr('disabled',true);
-	var pickup_time = new Date($('#order_pickup_time').val());
-	var current_time = new Date();	
+	//var pickup_time = new Date($('#order_pickup_time').val());
+	var pickup_time = $('#order_pickup_time').val();
+	var pickup_time_array = pickup_time.split(' ');
+	var pickup_time_ymd = pickup_time_array[0].split('-');
+	var pickup_time_hms = pickup_time_array[1].split(':');
+	
+	var pickup_datetime = new Date(parseInt(pickup_time_ymd[0]),parseInt(pickup_time_ymd[1]) - 1,parseInt(pickup_time_ymd[2]),parseInt(pickup_time_hms[0]),parseInt(pickup_time_hms[1]),parseInt(pickup_time_hms[2]));
+	var current_datetime = new Date();	
+
 	//Date.getTime returns the number of milliseconds since 1970/01/01:
-	if (pickup_time.getTime() < (current_time.getTime() + 30 * 60 * 1000)) {
+	if (pickup_datetime.getTime() < (current_datetime.getTime() + 30 * 60 * 1000)) {
 		alert("please place your order online at least 30 minutes before picking up");
 		return false;
 	}
