@@ -9,7 +9,10 @@
           <p><%= number_to_currency(listing.price) %></p>           
           <p><%# "Liked by #{listing.cached_votes_up}" %></p>
           <p><%= "Num of orders: #{listing.nr_order} " %></p>
-          <p><%= "by #{listing.seller.name}(#{listing.seller.aka_name})" %></p>
+          <p><%= "by #{listing.seller.name}" %></p>
+          <% if !listing.seller.aka_name.blank? %>
+            <%= "(#{listing.seller.aka_name})" %>
+          <% end %>
           <p><%= "sold on #{listing.sold_date}" %></p>
         </div>  
       </div>        

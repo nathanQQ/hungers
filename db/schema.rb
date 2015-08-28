@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150727003318) do
+ActiveRecord::Schema.define(version: 20150828042916) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -99,8 +99,10 @@ ActiveRecord::Schema.define(version: 20150727003318) do
     t.string   "saturday_close_at",      default: "9:00 PM"
     t.string   "sunday_open_at",         default: "11:00 AM"
     t.string   "sunday_close_at",        default: "9:00 PM"
+    t.datetime "deleted_at"
   end
 
+  add_index "sellers", ["deleted_at"], name: "index_sellers_on_deleted_at"
   add_index "sellers", ["email"], name: "index_sellers_on_email", unique: true
   add_index "sellers", ["reset_password_token"], name: "index_sellers_on_reset_password_token", unique: true
 
@@ -121,9 +123,11 @@ ActiveRecord::Schema.define(version: 20150727003318) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.datetime "deleted_at"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+  add_index "users", ["deleted_at"], name: "index_users_on_deleted_at"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
