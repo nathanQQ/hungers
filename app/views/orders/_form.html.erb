@@ -52,9 +52,12 @@
 
   <br>
   
-  <% @tax = @listing.price * @nr_order * @listing.seller.tax_rate * 0.01 %>
-  <% @total_price = @listing.price * @nr_order + @tax %>
-  <% @total_price = ((@total_price * 100).ceil)/100.0 %>
+  <% @pre_tax = @listing.price * @nr_order * 100 %>
+  <% @tax = (@pre_tax * @listing.seller.tax_rate * 0.01).ceil %>
+  <% @total_price =  (@pre_tax + @tax).ceil %>
+  <% @tax = @tax * 0.01 %>
+  <% @total_price = @total_price * 0.01 %>
+
 
   <div class="row">
     <div class="col-md-4">
