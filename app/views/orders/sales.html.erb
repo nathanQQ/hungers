@@ -1,6 +1,6 @@
 <% if !(@sales_month = params[:month]) %>
   <div class="center">
-    <h2>Your sales history Today</h2><br>
+    <h2>Your sales history this month</h2><br>
   </div>
 <% else %>
   <div class="center">
@@ -18,7 +18,8 @@
     <th class="text-center">Item</th>
     <th class="text-center">Price</th>
     <th class="text-center">Buyer</th>
-    <th class="text-center">number of orders</th>    
+    <th class="text-center">number of orders</th>  
+    <th class="text-center">Tax collected</th>    
     <th class="text-center">Order number</th>    
     <th class="text-center">Pick up at</th>
     <th class="text-center">Purchased at</th>
@@ -32,6 +33,7 @@
       <td class="center"><%= number_to_currency(order.listing.price) %></td>
       <td class="center"><%= order.user.email %></td>
       <td class="center"><%= order.nr_order %></td>
+      <td class="center"><%= number_to_currency(order.tax / 100.0) %></td>
       <td class="center"><%= order.order_id %></td>      
       <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M") %></td>
       <td class="center"><%= order.created_at.getlocal.strftime("%H:%M, %B %-d, %Y") %></td>
@@ -44,15 +46,16 @@
   <%=label_tag :sales_month, "show sales history by month" %>
   <div class="row">
     <div class="col-md-1">
-      <%= select_tag :sales_month, options_for_select([["#{Date.today.last_month.strftime("%B")}",Date.today.month - 1],
+      <%= select_tag :sales_month, options_for_select([
+                                                       ["#{Date.today.strftime("%B")}",Date.today.month],
+                                                       ["#{Date.today.last_month.strftime("%B")}",Date.today.month - 1],
                                                        ["#{Date.today.last_month.last_month.strftime("%B")}",Date.today.month - 2],
                                                        ["#{Date.today.last_month.last_month.last_month.strftime("%B")}",Date.today.month - 3],
                                                        ["#{Date.today.last_month.last_month.last_month.last_month.strftime("%B")}",Date.today.month - 4]], @sales_month) %>
     </div>
     <div class = 'col-md-4'>
       <div class="form-group">
-        <%= link_to "update month", sales_path, :id => :sales_month_update, data: {no_turbolink: true} %> |
-        <%= link_to "sales today", sales_path, data: {no_turbolink: true} %>
+        <%= link_to "update month", sales_path, :id => :sales_month_update, data: {no_turbolink: true} %>
       </div>   
     </div>
   </div>

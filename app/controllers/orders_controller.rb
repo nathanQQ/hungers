@@ -10,8 +10,8 @@ class OrdersController < ApplicationController
 
   def sales
     if !(@sales_month = params[:month])
-      #show sales history of today
-      @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
+      #show sales history of this month
+      @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_month)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
     else
       #show sales history by month.
       #Note: if the pickup date of a listing is the first date of a month, all the orders made in pior month will be treated as the orders in current month.
