@@ -1,25 +1,23 @@
-<% if !(@sales_month = params[:month]) %>
-  <div class="center">
-    <h2>Your sales history this month</h2><br>
-  </div>
-<% else %>
-  <div class="center">
-    <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
-  </div>
-  <div class="text">
-    <h4><%= "Total sales tax collected: #{number_to_currency(@sale_tax / 100.0)}" %></h4>
-    <h4><%= "Gross sale: #{number_to_currency(@total_sale)}" %></h4><br>
-  </div>  
-<% end %>
+
+<div class="center">
+  <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
+</div>
+<div class="text">
+  <h4><%= "Total gross sale from Hungers.me: #{number_to_currency(@total_sale)}" %></h4>
+  <h4><%= "Total money collected(included sales tax) in my account: #{number_to_currency(@total_collected / 100.0)}" %></h4>
+  <h4><%= "Total sales tax collected: #{number_to_currency(@sale_tax / 100.0)}" %></h4><br>
+</div>  
+
 
 <table class="table table-striped table-bordered">
   <tr>
     <th class="text-center">Image</th>
     <th class="text-center">Item</th>
+    <th class="text-center">Buyer</th>    
     <th class="text-center">Price</th>
-    <th class="text-center">Buyer</th>
-    <th class="text-center">number of orders</th>  
-    <th class="text-center">Tax collected</th>    
+    <th class="text-center">number of orders</th>
+    <th class="text-center">Total collected</th>
+    <th class="text-center">Tax collected</th>
     <th class="text-center">Order number</th>    
     <th class="text-center">Pick up at</th>
     <th class="text-center">Purchased at</th>
@@ -30,9 +28,10 @@
     <tr>
       <td class="center"><%= image_tag order.listing.image.url(:thumb) %></td>
       <td class="center"><%= order.listing.name %></td>
+      <td class="center"><%= order.user.email %></td>      
       <td class="center"><%= number_to_currency(order.listing.price) %></td>
-      <td class="center"><%= order.user.email %></td>
       <td class="center"><%= order.nr_order %></td>
+      <td class="center"><%= number_to_currency(order.collected / 100.0) %></td>
       <td class="center"><%= number_to_currency(order.tax / 100.0) %></td>
       <td class="center"><%= order.order_id %></td>      
       <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M") %></td>

@@ -12,6 +12,8 @@ class OrdersController < ApplicationController
     if !(@sales_month = params[:month])
       #show sales history of this month
       @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_month)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
+      #@orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_month)..Date.tomorrow.at_end_of_day).order("pickup_time ASC").page(params[:page])
+      @month_to_time = Date::MONTHNAMES[Date.today.month].to_time  
     else
       #show sales history by month.
       #Note: if the pickup date of a listing is the first date of a month, all the orders made in pior month will be treated as the orders in current month.
@@ -19,13 +21,15 @@ class OrdersController < ApplicationController
       @sales_month = @sales_month.to_i
       @month_to_time = Date::MONTHNAMES[@sales_month].to_time  
       @orders = Order.all.where(:seller => current_seller, :pickup_time => (@month_to_time.at_beginning_of_month)..@month_to_time.at_end_of_month).order("created_at ASC")
+    end
       @sale_tax = 0
       @total_sale = 0
+      @total_collected = 0
       @orders.each do |order|
         @sale_tax = @sale_tax + order.tax
         @total_sale = @total_sale + order.nr_order * order.listing.price
-      end    
-    end
+        @total_collected = @total_collected + order.collected    
+      end
   end
 
   def confirm_pickup
@@ -95,6 +99,9 @@ class OrdersController < ApplicationController
     @total_price =  (@pre_tax + @tax).ceil #ceil is to make stripe happy.
     @transaction_fee = (@total_price * 0.029 + 45).ceil
     @transfer_to_seller = (@total_price - @transaction_fee).floor #floor is also to make stripe happy.
+
+    @order.transaction_fee = @transaction_fee
+    @order.collected = @transfer_to_seller
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
