@@ -184,13 +184,14 @@ class OrdersController < ApplicationController
             )            
           end  #token
           
-          # create transfer.
+          # create transfer - don't do transfer per transaction.
+          '''
           transfer = Stripe::Transfer.create(
             :amount => @transfer_to_seller,
             :currency => "usd",
             :recipient => @listing.seller.recipient
             ) 
-
+          '''
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
