@@ -1,7 +1,13 @@
+<% if !(@sales_month = params[:month]) %>
+  <div class="center">
+    <h2>Your sales history today/tomorrow</h2><br>
+  </div>
+<% else %>
+  <div class="center">
+    <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
+  </div>
+<% end %>
 
-<div class="center">
-  <h2><%= "Your sales history in #{@month_to_time.strftime("%B")}" %></h2><br>
-</div>
 <div class="text">
   <h4><%= "Total gross sale from Hungers.me: #{number_to_currency(@total_sale)}" %></h4>
   <h4><%= "Total money collected(included sales tax) in my account: #{number_to_currency(@total_collected / 100.0)}" %></h4>
@@ -34,7 +40,7 @@
       <td class="center"><%= number_to_currency(order.collected / 100.0) %></td>
       <td class="center"><%= number_to_currency(order.tax / 100.0) %></td>
       <td class="center"><%= order.order_id %></td>      
-      <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M") %></td>
+      <td class="center"><%= order.pickup_time.getlocal.strftime("%H:%M, %B %-d") %></td>
       <td class="center"><%= order.created_at.getlocal.strftime("%H:%M, %B %-d, %Y") %></td>
       <td class="center"><%= link_to "#{order.is_pickedup}", confirm_pickup_path(order, :id => order.id), class: "btn btn-default", data: {no_turbolink: true} %></td>
     </tr>
@@ -54,7 +60,8 @@
     </div>
     <div class = 'col-md-4'>
       <div class="form-group">
-        <%= link_to "update month", sales_path, :id => :sales_month_update, data: {no_turbolink: true} %>
+        <%= link_to "update month", sales_path, :id => :sales_month_update, data: {no_turbolink: true} %> |
+        <%= link_to "sales today", sales_path, data: {no_turbolink: true} %>
       </div>   
     </div>
   </div>
