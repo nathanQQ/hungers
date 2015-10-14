@@ -2,6 +2,9 @@
 class ManagementController < ApplicationController
   before_action :authenticate_admin!
 
+def show_transfer
+  @sellers = Seller.all
+end
   
   def show_listings
     @listings = Listing.order("seller_id ASC").page(params[:page])

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012055936) do
+ActiveRecord::Schema.define(version: 20151014085017) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20151012055936) do
     t.string   "sunday_open_at",         default: "11:00 AM"
     t.string   "sunday_close_at",        default: "9:00 PM"
     t.datetime "deleted_at"
+    t.integer  "pending_transfer",       default: 0
   end
 
   add_index "sellers", ["deleted_at"], name: "index_sellers_on_deleted_at"

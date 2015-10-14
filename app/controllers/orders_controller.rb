@@ -192,6 +192,8 @@ class OrdersController < ApplicationController
             :recipient => @listing.seller.recipient
             ) 
           '''
+          @listing.seller.update_attribute(:pending_transfer,  @listing.seller.pending_transfer + @transfer_to_seller)
+
           flash[:notice] = "Thanks for ordering!"
           rescue Stripe::CardError => e
           flash[:danger] = e.message
