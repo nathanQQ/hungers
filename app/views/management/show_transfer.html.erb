@@ -11,7 +11,7 @@
   <% @sellers.each do |seller| %>
     <tr>
       <td class="center"><%= seller.name %></td>
-      <td class="center"><%= seller.pending_transfer %></td>
+      <td class="center"><%= number_to_currency(seller.pending_transfer / 100.0) %></td>
     </tr>
   <% end %>
 </table>
