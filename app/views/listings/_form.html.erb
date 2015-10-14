@@ -34,7 +34,7 @@
   </div>
 
   <br>
-  <% if current_seller.recipient.blank? %>
+  <% if seller_signed_in? and current_seller.recipient.blank? %>
     <h1>Bank Account Information</h1>
     
     <div class="form-group">

@@ -146,6 +146,23 @@ class ListingsController < ApplicationController
   # PATCH/PUT /listings/1
   # PATCH/PUT /listings/1.json
   def update
+    if current_seller.recipient.blank?
+      Stripe.api_key = ENV["STRIPE_API_KEY"]
+      token = params[:stripeToken] 
+      
+      recipient = Stripe::Recipient.create(
+      :name => current_seller.name,
+      # WQ TODO 3: set recipient type corporate, this corporate/restaurant name will be used. Ask seller the bank corporate account
+      # If indiviual, the full legal name(first+last) is required. 
+      #:type => "individual",
+      :type => "corporation",
+      :bank_account => token
+      )  
+      
+      current_seller.recipient = recipient.id
+      current_seller.save
+    end
+
     respond_to do |format|
       if @listing.update(listing_params)
         format.html { redirect_to @listing, notice: 'Listing was successfully updated.' }
