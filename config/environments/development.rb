@@ -38,7 +38,7 @@ Rails.application.configure do
 
   # action mailer setup
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
   config.action_mailer.perform_deliveries = true
   #smtp, sendmail or test
   config.action_mailer.delivery_method = :smtp
@@ -51,5 +51,6 @@ Rails.application.configure do
     :user_name => ENV["EMAIL_USER"],
     :password => ENV["EMAIL_PASSWORD"]
   }
+
 
 end

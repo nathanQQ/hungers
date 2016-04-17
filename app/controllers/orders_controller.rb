@@ -104,112 +104,116 @@ class OrdersController < ApplicationController
 
     Stripe.api_key = ENV["STRIPE_API_KEY"]
     token = params[:stripeToken] 
-    respond_to do |format|
-      if @order.save
-        begin          
-          order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
-          if @listing.seller.address_line2.blank?
-            seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
-          else
-            seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.address_line2 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
-          end
-          seller_email = @listing.seller.email
-          purchased_item = @listing.name
-          purchased_amount = @nr_order
-          pickup_time = @order.pickup_time
-          seller = Seller.find(@order.seller_id)
-          seller_name = seller.name
-
-          
-          #there is credit card token created by js due to new customer
-          if token
-            does_remember_card = params[:rmcc]
-            if does_remember_card == 'true'
-              customer = Stripe::Customer.create(
-                :card => token,
-                :description => 'credit card description',
-                :email => current_user.email
-                )
-
-              current_user.update_attribute(:stripe_customer_id, customer.id)
-              charge = Stripe::Charge.create(
-              :amount => @total_price,
-              :currency => "usd",
-              :customer => customer.id,
-              :metadata => {
-                :email => current_user.email,                 
-                :order_id => order_id,
-                :seller_name => seller_name,
-                :seller_address => seller_address,
-                :seller_email => seller_email,
-                :purchased_item => purchased_item,
-                :purchased_amount => purchased_amount,
-                :total_price => @total_price/100.0,
-                :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
-              )
-            else  #does_remember_card
-              charge = Stripe::Charge.create(
-              :amount => @total_price,
-              :currency => "usd",
-              :card => token,
-              :metadata => {
-                :email => current_user.email, 
-                :order_id => order_id,
-                :seller_name => seller_name,
-                :seller_address => seller_address,
-                :seller_email => seller_email,
-                :purchased_item => purchased_item,
-                :purchased_amount => purchased_amount,
-                :total_price => @total_price/100.0,
-                :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}              
-              ) 
-            end   #does_remember_card      
-
-          else  #token 
-            customer_id = current_user.stripe_customer_id
-            charge = Stripe::Charge.create(
-            :amount => @total_price,
-            :currency => "usd",
-            :customer => customer_id,
-            :metadata => {
-              :email => current_user.email, 
-              :order_id => order_id,
-              :seller_name => seller_name,
-              :seller_address => seller_address,
-              :seller_email => seller_email,
-              :purchased_item => purchased_item,
-              :purchased_amount => purchased_amount,
-              :total_price => @total_price/100.0,
-              :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
-            )            
-          end  #token
-          
-          # create transfer - don't do transfer per transaction.
-          '''
-          transfer = Stripe::Transfer.create(
-            :amount => @transfer_to_seller,
-            :currency => "usd",
-            :recipient => @listing.seller.recipient
-            ) 
-          '''
-          @listing.seller.update_attribute(:pending_transfer,  @listing.seller.pending_transfer + @transfer_to_seller)
-
-          flash[:notice] = "Thanks for ordering!"
-          rescue Stripe::CardError => e
-          flash[:danger] = e.message
-        end #begin 
-        
-        @order.update_attribute(:order_id, order_id)
-        @order.update_attribute(:tax, @tax)
-        @listing.nr_order += @nr_order
-        @listing.save
-        format.html { redirect_to listings_path, notice: "Your order was successfully created!\nYou will receive the order number via email. Please use it for your pick up:)" }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
+    
+       
+    order_id = SecureRandom.hex(2).upcase + '-' + SecureRandom.hex(2).upcase
+    if @listing.seller.address_line2.blank?
+      seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
+    else
+      seller_address = @listing.seller.address_line1 + ', ' + @listing.seller.address_line2 + ', ' + @listing.seller.city + ', ' + @listing.seller.state + ', ' + @listing.seller.zip_code
     end
+    seller_email = @listing.seller.email
+    purchased_item = @listing.name
+    purchased_amount = @nr_order
+    pickup_time = @order.pickup_time
+    seller = Seller.find(@order.seller_id)
+    seller_name = seller.name
+
+    @order.order_id = order_id
+    @order.tax = @tax
+    
+    # begin to catch error
+    begin
+      #there is credit card token created by js due to new customer
+      if token
+        does_remember_card = params[:rmcc]
+        if does_remember_card == 'true'
+          customer = Stripe::Customer.create(
+            :card => token,
+            :description => 'credit card description',
+            :email => current_user.email
+            )
+
+          current_user.update_attribute(:stripe_customer_id, customer.id)
+
+          charge = Stripe::Charge.create(
+          :amount => @total_price,
+          :currency => "usd",
+          :customer => customer.id,
+          :metadata => {
+            :email => current_user.email,                 
+            :order_id => order_id,
+            :seller_name => seller_name,
+            :seller_address => seller_address,
+            :seller_email => seller_email,
+            :purchased_item => purchased_item,
+            :purchased_amount => purchased_amount,
+            :total_price => @total_price/100.0,
+            :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
+          )
+        else  #does_remember_card
+          charge = Stripe::Charge.create(
+          :amount => @total_price,
+          :currency => "usd",
+          :card => token,
+          :metadata => {
+            :email => current_user.email, 
+            :order_id => order_id,
+            :seller_name => seller_name,
+            :seller_address => seller_address,
+            :seller_email => seller_email,
+            :purchased_item => purchased_item,
+            :purchased_amount => purchased_amount,
+            :total_price => @total_price/100.0,
+            :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}              
+          ) 
+        end   #does_remember_card      
+      else  #token 
+        customer_id = current_user.stripe_customer_id
+        charge = Stripe::Charge.create(
+        :amount => @total_price,
+        :currency => "usd",
+        :customer => customer_id,
+        :metadata => {
+          :email => current_user.email, 
+          :order_id => order_id,
+          :seller_name => seller_name,
+          :seller_address => seller_address,
+          :seller_email => seller_email,
+          :purchased_item => purchased_item,
+          :purchased_amount => purchased_amount,
+          :total_price => @total_price/100.0,
+          :pickup_time => pickup_time.strftime("%H:%M, %B %-d, %Y")}
+        )            
+      end  #token
+      
+      # create transfer - don't do transfer per transaction.
+      '''
+      transfer = Stripe::Transfer.create(
+        :amount => @transfer_to_seller,
+        :currency => "usd",
+        :recipient => @listing.seller.recipient
+        ) 
+      '''    
+    rescue Stripe::CardError => e
+      flash[:danger] = e.message      
+      redirect_to listings_path
+    else
+      respond_to do |format|
+        # up to now, the transaction b/w stripe is good. Let's go ahead and save the order object into database
+        if @order.save
+          # if order object saved successfully, let's save the listing info as well.        
+          @listing.seller.update_attribute(:pending_transfer,  @listing.seller.pending_transfer + @transfer_to_seller)        
+          @listing.update_attribute(:nr_order, @listing.nr_order + @nr_order);
+
+          format.html { redirect_to listings_path, notice: "Your order was successfully created!\nYou will receive the order number via email. Please use it for your pick up:)" }
+          format.json { render :show, status: :created, location: @order }
+        else
+          format.html { render :new }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
+      end
+    end #begin..rescue..else..end
   end
 
   # PATCH/PUT /orders/1
