@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
   def sales
     if !(@sales_month = params[:month])
       #show sales history today/tomorrow
-      @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.tomorrow.at_end_of_day).order("pickup_time ASC").page(params[:page])
+      @orders = Order.all.where(:seller => current_seller, :pickup_time => (Date.today.at_beginning_of_day)..Date.today.at_end_of_day).order("pickup_time ASC").page(params[:page])
       @month_to_time = Date::MONTHNAMES[Date.today.month].to_time  
     else
       #show sales history by month.
