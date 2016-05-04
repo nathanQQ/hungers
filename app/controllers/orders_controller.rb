@@ -96,7 +96,7 @@ class OrdersController < ApplicationController
     @pre_tax = @listing.price * @nr_order * 100
     @tax = (@pre_tax * @listing.seller.tax_rate * 0.01).ceil
     @total_price =  (@pre_tax + @tax).ceil #ceil is to make stripe happy.
-    @transaction_fee = (@total_price * 0.029 + 45).ceil
+    @transaction_fee = (@total_price * 0.033 + 60).ceil
     @transfer_to_seller = (@total_price - @transaction_fee).floor #floor is also to make stripe happy.
 
     @order.transaction_fee = @transaction_fee
@@ -187,14 +187,14 @@ class OrdersController < ApplicationController
         )            
       end  #token
       
-      # create transfer - don't do transfer per transaction.
-      '''
+      # create transfer - need to ask seller how they want to do transfer.
+      
       transfer = Stripe::Transfer.create(
         :amount => @transfer_to_seller,
         :currency => "usd",
         :recipient => @listing.seller.recipient
         ) 
-      '''    
+          
     rescue Stripe::CardError => e
       flash[:danger] = e.message      
       redirect_to listings_path
