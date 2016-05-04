@@ -174,7 +174,6 @@
     <%= f.label :pickup_time, "Select your pickup time" %>
 
     <%= f.select :pickup_time, options_for_select([
-      ["11:00AM", "#{@listing.sold_date} 11:00AM".to_time],
       ["11:30AM", "#{@listing.sold_date} 11:30AM".to_time],
       ["12:00PM", "#{@listing.sold_date} 12:00PM".to_time],
       ["12:30PM", "#{@listing.sold_date} 12:30PM".to_time], 
